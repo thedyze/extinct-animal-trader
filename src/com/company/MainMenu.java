@@ -7,7 +7,9 @@ public class MainMenu {
     public static int totalTurns = 5;
     public static int numberOfPlayers = 4;
     public static Scanner scanner = new Scanner(System.in);
-    public static String [] pNames;
+    //public static ArrayList<String> pNames;
+    public static ArrayList<String> pNames = new ArrayList<>();
+
 
     public static void init() {
 
@@ -15,13 +17,13 @@ public class MainMenu {
         System.out.println("      Welcome to: \n \u001B[1mEXTINCT ANIMAL TRADER\033[0;0m \n ----------------------\n");
         var input = Dialogs.promptInt("Press 1 for new game :>", 1, 1);
         numberOfPlayers = Dialogs.promptInt("How may players? (1-4)", 1, 4);
-        pNames = new String [numberOfPlayers];
-
+        //pNames = new ArrayList<String>() [numberOfPlayers];
+        //pNames = new ArrayList<>(String);
 
         //loop through number of players and set names.
-        for (int i = 0; i < pNames.length; i++ ) {
+        for (int i = 0; i < numberOfPlayers; i++ ) {
             System.out.println("Player "  + (i + 1) + " name?");
-            pNames[i] = scanner.nextLine();
+            pNames.add (scanner.nextLine());
         }
 
         System.out.println("Welcome to the game ");
