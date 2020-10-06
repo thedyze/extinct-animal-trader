@@ -4,6 +4,7 @@ import java.util.*;
 public class MainMenu {
 
     public static int player = 1;
+    public static int totalTurns = 5;
 
 
     public static void init() {
@@ -17,12 +18,14 @@ public class MainMenu {
         //loop through number of players and set names.
         for (player = 1; player <= numberOfPlayers; player++ ) {
             pNames[player-1] = Dialogs.prompt("What's your name player " + player + "?");
-
         }
+
         System.out.println("Welcome to the game ");
         for (player = 0; player < numberOfPlayers; player++ ) {
             System.out.println(pNames[player]);
         }
+        //select number of game turns
+        totalTurns = Dialogs.promptInt("How many turns should the game be? (5-30)", 5,30);
     }
 
 }
