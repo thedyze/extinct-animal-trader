@@ -7,7 +7,6 @@ public class MainMenu {
     public static int totalTurns = 5;
     public static int numberOfPlayers = 4;
     public static Scanner scanner = new Scanner(System.in);
-    //public static ArrayList<String> pNames;
     public static ArrayList<String> pNames = new ArrayList<>();
 
 
@@ -17,8 +16,6 @@ public class MainMenu {
         System.out.println("      Welcome to: \n \u001B[1mEXTINCT ANIMAL TRADER\033[0;0m \n ----------------------\n");
         var input = Dialogs.promptInt("Press 1 for new game :>", 1, 1);
         numberOfPlayers = Dialogs.promptInt("How may players? (1-4)", 1, 4);
-        //pNames = new ArrayList<String>() [numberOfPlayers];
-        //pNames = new ArrayList<>(String);
 
         //loop through number of players and set names.
         for (int i = 0; i < numberOfPlayers; i++ ) {
