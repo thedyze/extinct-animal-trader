@@ -14,9 +14,11 @@ public class MainMenu {
         //loop through number of players and set names, add cash
         for (int i = 0; i < Game.numberOfPlayers; i++ ) {
             System.out.println("Player "  + (i + 1) + " name?");
-            Game.pNames.add (scanner.nextLine());
-            Game.pCash.add(10000);
+            Player.names.add (scanner.nextLine());
+            Player.cash.add(10000);
         }
+
+        Game.totalTurns = Dialogs.promptInt("Select Game duration? (5-30 turns):", 5,30);
         /*
         System.out.println("Welcome to the game ");
         for (String pName : Game.pNames) {
@@ -24,7 +26,7 @@ public class MainMenu {
         }
          */
         //select number of game turns
-        Game.totalTurns = Dialogs.promptInt("Select Game duration? (5-30 turns):", 5,30);
+
     }
 
 }
