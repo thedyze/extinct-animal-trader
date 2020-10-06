@@ -17,13 +17,14 @@ public class MainMenu {
             Game.pNames.add (scanner.nextLine());
             Game.pCash.add(10000);
         }
-
+        /*
         System.out.println("Welcome to the game ");
         for (String pName : Game.pNames) {
             System.out.println(pName);
         }
+         */
         //select number of game turns
-        Game.totalTurns = Dialogs.promptInt("How many turns should the game be? (5-30)", 5,30);
+        Game.totalTurns = Dialogs.promptInt("Select Game duration? (5-30 turns):", 5,30);
     }
 
 }
