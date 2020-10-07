@@ -16,7 +16,7 @@ public class Game {
 
             for (player = 1; player <= numberOfPlayers; player++) {
                 System.out.println("Turn: " +currentTurn + "/" +totalTurns +
-                        ". Player " + Player.names.get(player -1) + ", you have " + Player.cash.get(player -1) + "€");
+                        ". Player " + Player.names.get(player -1) + ", you have " + Player.cash + "€");
                 playerAction();
             }
     }
@@ -44,7 +44,7 @@ public class Game {
         for (int i = 0; i < Game.numberOfPlayers; i++ ) {
             System.out.println("Player "  + (i + 1) + " name?");
             Player.names.add (scanner.nextLine());
-            Player.cash.add(10000);
+            Player.cash = 10000;
         }
         //select number of game turns
         Game.totalTurns = Dialogs.promptInt("Select Game duration? (5-30 turns):", 5,30);
