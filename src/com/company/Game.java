@@ -3,22 +3,24 @@ package com.company;
 import java.util.Scanner;
 
 public class Game {
-    public static int currentTurn = 0;
+    public static int currentTurn = 1;
     public static int totalTurns;
     public static int numberOfPlayers;
     public static int player = 1;
     public static Scanner scanner = new Scanner(System.in);
 
-    public static void turn() {
-            if (currentTurn <totalTurns) {
-                currentTurn++;
-            }
 
+    public static void turn() {
+        for (currentTurn = 1; currentTurn <= totalTurns; currentTurn++) {
             for (player = 1; player <= numberOfPlayers; player++) {
-                System.out.println("Turn: " +currentTurn + "/" +totalTurns +
-                        ". Player " + Player.names.get(player -1) + ", you have " + Player.cash + "€");
+                Dialogs.clear();
+                System.out.println("Turn: " + currentTurn + "/" + totalTurns +
+                        ". Player: " + Player.names.get(player - 1) + ", you have " + Player.cash + "€.");
+                Player.actionTaken = false;
                 playerAction();
             }
+        }
+
     }
 
     public static void playerAction() {

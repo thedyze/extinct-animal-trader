@@ -8,7 +8,7 @@ public class Store {
     public static void menu() {
 
         var instore = true;
-        while (instore) {
+        while (instore && !Player.actionTaken) {
             Dialogs.clear();
             System.out.println("Welcome to the Extinct Animals store! Please make a selecton:");
             var input = Dialogs.promptInt("[1:Buy Animals] [2:Sell Animals] [3:Buy Food] " +
@@ -33,8 +33,8 @@ public class Store {
             System.out.println("You have: " + Player.cash + "€. Your food inventory:");
             System.out.println(Collections.singletonList(Player.food));
 
-            var input = Dialogs.promptInt("Current stock: [1:Food1 10€/kg] [2:Food2 10€/kg] [3:Food3 10€/kg] " +
-                    "[4:Food4 10€/kg] [5:Food5 10€/kg] [6:Back to Store Front]", 1, 6);
+            var input = Dialogs.promptInt("Store stock: [1:Food1 10€/kg] [2:Food2 10€/kg] [3:Food3 10€/kg] " +
+                    "[4:Food4 10€/kg] [5:Food5 10€/kg] [6:Done]", 1, 6);
             switch (input) {
                 case 1 -> purchaseAmount(1, 10);
                 case 2 -> purchaseAmount(2, 10);
@@ -68,5 +68,6 @@ public class Store {
             Player.food.put(foodName, input);
         }
         Player.cash -= (price*input);
+        Player.actionTaken = true;
     }
 }
