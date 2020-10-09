@@ -29,9 +29,9 @@ public class Store {
         //select food
         while (inFood) {
             //display player food and cash
-            Dialogs.clear();
+            //Dialogs.clear();
             System.out.println("You have: " + Player.cash + "€. Your food inventory:");
-            System.out.println(Collections.singletonList(Player.food));
+            System.out.println(Collections.singletonList(Player.foodInv));
 
             var input = Dialogs.promptInt("Store stock: [1:Food1 10€/kg] [2:Food2 10€/kg] [3:Food3 10€/kg] " +
                     "[4:Food4 10€/kg] [5:Food5 10€/kg] [6:Done]", 1, 6);
@@ -45,29 +45,36 @@ public class Store {
             }
         }
     }
+
     //amount to buy
     public static void purchaseAmount(int foodtype, int price) {
+        /*
         var foodName = "empty";
         switch (foodtype) {
-            case 1 -> foodName = "Food1";
+            case 1 ->  //{Hay hay = new Hay();}
             case 2 -> foodName = "Food2";
             case 3 -> foodName = "Food3";
             case 4 -> foodName = "Food4";
             case 5 -> foodName = "Food5";
         }
-        System.out.println("You can afford max " + (Player.cash/price) + " kilos of " + foodName);
-        var input = Dialogs.promptInt("How many kilos do you want?", 1, (Player.cash/price));
+        System.out.println("You can afford max " + (Player.cash + " kilos of " + foodName));
+        var input = Dialogs.promptInt("How many kilos do you want?",
+                1, (Player.cash/price));
 
         //add to hashmap
-        if (Player.food.containsKey(foodName)) {
-            Integer count = Player.food.get(foodName) + input;
-            Player.food.put(foodName, count);
+        if (Player.foodInv.containsKey(foodName)) {
+            Integer count = Player.foodInv.get(foodName) + input;
+            Player.foodInv.put(foodName, count);
 
         }
         else {
-            Player.food.put(foodName, input);
+            Player.foodInv.put(foodName, input);
         }
-        Player.cash -= (price*input);
+
+        Player.cash = (Player.cash - (price * input));
+        */
         Player.actionTaken = true;
+
+
     }
 }
