@@ -14,18 +14,18 @@ public class Game {
 
 
 
-    // static void turn(ArrayList<Player> players,Player getName) {
-         static void turn() {
-        //currentPlayer = 1;
+
+    static void turn() {
         //loop game turns
         for (currentTurn = 1; currentTurn <= totalTurns; currentTurn++) {
-            //loop players
-            for (int i = 1; i <= numberOfPlayers; i++) {
-                Player currentPlayer = players.get(i-1);
+            //loop player turns
+            Player currentPlayer;
+            for (int i = 0; i < numberOfPlayers; i++) {
+                currentPlayer = players.get(i);
                 //Dialogs.clear();
                 System.out.println("Turn: " + currentTurn + "/" + totalTurns +
                         ". Player: " + currentPlayer.getName() + ", you have "
-                        + Player.cash + "€.");
+                        + currentPlayer.getCash() + "€.");
                 Player.actionTaken = false;
                 Player.playerAction();
             }
@@ -37,7 +37,7 @@ public class Game {
         //Dialogs.clear();
         System.out.println("      Welcome to: \n \u001B[1mEXTINCT ANIMAL TRADER\033[0;0m \n ----------------------\n");
         var input = Dialogs.promptInt("Press 1 for new game :>", 1, 1);
-        numberOfPlayers = Dialogs.promptInt("How may players? (1-4)", 1, 4);
+        numberOfPlayers = Dialogs.promptInt("How many players? (1-4)", 1, 4);
 
         //add players
         for (int i = 0; i < numberOfPlayers; i++ ) {

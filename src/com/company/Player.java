@@ -21,7 +21,9 @@ public class Player {
         return this.name;
     }
 
-
+    public int getCash() {
+        return this.cash;
+    }
     public static void playerAction() {
         var input = Dialogs.promptInt("\nChoose your action:\n [1:Visit Store] [2:Feed Animals] [3:Mate Animals]"
                 , 1, 3);

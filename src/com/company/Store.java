@@ -48,6 +48,7 @@ public class Store {
 
     //amount to buy
     public static void purchaseAmount(int foodtype, int price) {
+
         /*
         var foodName = "empty";
         switch (foodtype) {
