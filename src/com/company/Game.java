@@ -1,27 +1,50 @@
 package com.company;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Game {
     public static int currentTurn = 1;
     public static int totalTurns;
     public static int numberOfPlayers;
-    public static int player = 1;
+    public static int currentPlayer = 1;
+
+    public static ArrayList<Object> players = new ArrayList<>();
     public static Scanner scanner = new Scanner(System.in);
 
-
     public static void turn() {
+        //currentPlayer = players.get(0);
         for (currentTurn = 1; currentTurn <= totalTurns; currentTurn++) {
-            for (player = 1; player <= numberOfPlayers; player++) {
-                Dialogs.clear();
+            for (currentPlayer = 1; currentPlayer <= numberOfPlayers; currentPlayer++) {
+                players.get(currentPlayer-1);
+                //Dialogs.clear();
                 System.out.println("Turn: " + currentTurn + "/" + totalTurns +
-                        ". Player: " + Player.names.get(player - 1) + ", you have " + Player.cash + "€.");
+                        ". Player: " + Player.playerName + ", you have "
+                        + Player.cash + "€.");
                 Player.actionTaken = false;
                 playerAction();
             }
         }
 
     }
+/*
+    public static void turn() {
+        for (currentTurn = 1; currentTurn <= totalTurns; currentTurn++) {
+            //int i = 0;
+            for (playerList.indexOf(currentPlayer-1); playerList.indexOf(currentPlayer-1) <= playerList.size(); currentPlayer++) {
+            //for (currentPlayer = 1; currentPlayer <= numberOfPlayers; currentPlayer++) {
+            //for (Player turn:playerList) {
+            //for (int i=0; i < playerList.size(); i++) {
+                //Dialogs.clear();
+                System.out.println("Turn: " + currentTurn + "/" + totalTurns +
+                        ". Player: " + Player.playerName + ", you have "
+                        + Player.cash + "€.");
+                Player.actionTaken = false;
+                playerAction();
+            }
+        }
+
+    } */
 
     public static void playerAction() {
         var input = Dialogs.promptInt("\nChoose your action:\n [1:Visit Store] [2:Feed Animals] [3:Mate Animals]"
@@ -37,27 +60,18 @@ public class Game {
     }
     public static void init() {
 
-        Dialogs.clear();
+        //Dialogs.clear();
         System.out.println("      Welcome to: \n \u001B[1mEXTINCT ANIMAL TRADER\033[0;0m \n ----------------------\n");
         var input = Dialogs.promptInt("Press 1 for new game :>", 1, 1);
-        Game.numberOfPlayers = Dialogs.promptInt("How may players? (1-4)", 1, 4);
+        numberOfPlayers = Dialogs.promptInt("How may players? (1-4)", 1, 4);
 
-        //loop through number of players and set names, add starting cash
-        for (int i = 0; i < Game.numberOfPlayers; i++ ) {
-            System.out.println("Player "  + (i + 1) + " name?");
-            Player.names.add (scanner.nextLine());
-            Player.cash = 10000;
+        //add players
+        for (int i = 0; i < numberOfPlayers; i++ ) {
+            Player player = new Player(Dialogs.prompt("Player "  + (i + 1) + " name?")/*,i*/);
+
         }
         //select number of game turns
-        Game.totalTurns = Dialogs.promptInt("Select Game duration? (5-30 turns):", 5,30);
-        /*
-        System.out.println("Welcome to the game ");
-        for (String pName : Game.pNames) {
-            System.out.println(pName);
-        }
-         */
-
-
+        totalTurns = Dialogs.promptInt("Select Game duration? (5-30 turns):", 5,30);
     }
 }
 
