@@ -5,35 +5,33 @@ import java.util.*;
 public class Player {
 
     public static boolean actionTaken = false;
-    public static int cash;
-    //public static ArrayList<Integer> cash = new ArrayList<>();
-    //public static ArrayList<Object> playerList = new ArrayList<>();
     public static Map <Food, Integer> foodInv;
-    public static String playerName;
-    int playerNumber;
+    private String name;
+    private int pNumber;
+    public static int cash;
 
-    public Player(String name /*,  int pnumber */) {
-        playerName = name;
-        //playerNumber = pnumber;
+    public Player(String name, int pNumber) {
+        this.name = name;
+        this.pNumber = pNumber;
         cash = 10000;
         foodInv = new HashMap<>();
-        //names.add (Dialogs.prompt("Player"));
-
-        Game.players.add (new Player(name));
     }
 
-    //public static void createFoodList(){
-    //    foodList = new HashMap<>();
-    //}
-    //public static Map <Integer, int[]> food = new HashMap<>();
-    /*
-    public static void createFoodHashMaps(String mapName ){
+    public String getName() {
+        return this.name;
+    }
 
-        for (int i = 0; i < Game.numberOfPlayers; i++ ) {
-            //String mapName = ("foodMap" + i);
-            public static Map <String, Integer>  mapName = new HashMap<>();
+
+    public static void playerAction() {
+        var input = Dialogs.promptInt("\nChoose your action:\n [1:Visit Store] [2:Feed Animals] [3:Mate Animals]"
+                , 1, 3);
+
+        switch (input) {
+            case 1: Store.menu();
+
+            case 2: //feedAnimals();
+            case 3: //mateAnimals();
         }
-    }
 
-     */
+    }
 }

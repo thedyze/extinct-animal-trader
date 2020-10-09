@@ -7,24 +7,49 @@ public class Game {
     public static int currentTurn = 1;
     public static int totalTurns;
     public static int numberOfPlayers;
-    public static int currentPlayer = 1;
+    public static Object currentPlayer;
 
-    public static ArrayList<Object> players = new ArrayList<>();
+    public static ArrayList<Player> players = new ArrayList<>();
     public static Scanner scanner = new Scanner(System.in);
 
-    public static void turn() {
-        //currentPlayer = players.get(0);
+
+
+    // static void turn(ArrayList<Player> players,Player getName) {
+         static void turn() {
+        //currentPlayer = 1;
+        //loop game turns
         for (currentTurn = 1; currentTurn <= totalTurns; currentTurn++) {
-            for (currentPlayer = 1; currentPlayer <= numberOfPlayers; currentPlayer++) {
-                players.get(currentPlayer-1);
+            //loop players
+            for (int i = 1; i <= numberOfPlayers; i++) {
+                Player currentPlayer = players.get(i-1);
                 //Dialogs.clear();
                 System.out.println("Turn: " + currentTurn + "/" + totalTurns +
-                        ". Player: " + Player.playerName + ", you have "
+                        ". Player: " + currentPlayer.getName() + ", you have "
                         + Player.cash + "€.");
                 Player.actionTaken = false;
-                playerAction();
+                Player.playerAction();
             }
         }
+
+    }
+    static void init() {
+
+        //Dialogs.clear();
+        System.out.println("      Welcome to: \n \u001B[1mEXTINCT ANIMAL TRADER\033[0;0m \n ----------------------\n");
+        var input = Dialogs.promptInt("Press 1 for new game :>", 1, 1);
+        numberOfPlayers = Dialogs.promptInt("How may players? (1-4)", 1, 4);
+
+        //add players
+        for (int i = 0; i < numberOfPlayers; i++ ) {
+            Player player = new Player(Dialogs.prompt("Player "  + (i + 1) + " name?"),i);
+            players.add(player);
+            //players.add(new Player(Dialogs.prompt("Player "  + (i + 1) + " name?"),i));
+
+        }
+        //select number of game turns
+        totalTurns = Dialogs.promptInt("Select Game duration? (5-30 turns):", 5,30);
+        Game.turn();
+        //Game.turn(players);
 
     }
 /*
@@ -46,32 +71,7 @@ public class Game {
 
     } */
 
-    public static void playerAction() {
-        var input = Dialogs.promptInt("\nChoose your action:\n [1:Visit Store] [2:Feed Animals] [3:Mate Animals]"
-                , 1, 3);
 
-        switch (input) {
-            case 1: Store.menu();
 
-            case 2: //feedAnimals();
-            case 3: //mateAnimals();
-        }
-
-    }
-    public static void init() {
-
-        //Dialogs.clear();
-        System.out.println("      Welcome to: \n \u001B[1mEXTINCT ANIMAL TRADER\033[0;0m \n ----------------------\n");
-        var input = Dialogs.promptInt("Press 1 for new game :>", 1, 1);
-        numberOfPlayers = Dialogs.promptInt("How may players? (1-4)", 1, 4);
-
-        //add players
-        for (int i = 0; i < numberOfPlayers; i++ ) {
-            Player player = new Player(Dialogs.prompt("Player "  + (i + 1) + " name?")/*,i*/);
-
-        }
-        //select number of game turns
-        totalTurns = Dialogs.promptInt("Select Game duration? (5-30 turns):", 5,30);
-    }
 }
 
