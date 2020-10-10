@@ -4,11 +4,11 @@ import java.util.*;
 
 public class Player {
 
-    public static boolean actionTaken = false;
-    public static Map <Food, Integer> foodInv;
+    //public static boolean actionTaken = false;
+    private HashMap <Food, Integer> foodInv;
     private String name;
     private int pNumber;
-    public static int cash;
+    private int cash;
 
     public Player(String name, int pNumber) {
         this.name = name;
@@ -24,5 +24,19 @@ public class Player {
     public int getCash() {
         return this.cash;
     }
+
+    public int setCash(int price) {
+         this.cash = cash - price;
+         return this.cash;
+    }
+
+    public Map getFoodInv() {
+        return this.foodInv;
+    }
+    /*
+    public HashMap<Food, Integer> setFoodInv(HashMap<Food,Integer> food) {
+        this.foodInv = food;
+        return this.foodInv;
+    } */
 
 }
