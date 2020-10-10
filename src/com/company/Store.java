@@ -1,23 +1,24 @@
 package com.company;
 
+import com.company.FoodSubClasses.Cheezeburgers;
+
 import java.util.Collections;
 
 public class Store {
 
 
-    public static void menu() {
+    public static void storeFront(Player player) {
 
         var instore = true;
-        while (instore && !Player.actionTaken) {
-            Player.actionTaken = true; //TEMP!!
+        while (instore && !Game.actionTaken) {
             Dialogs.clear();
-            System.out.println("Welcome to the Extinct Animals store! Please make a selecton:");
+            System.out.println("Welcome " + player.getName() + ", to the Extinct Animals store! Please make a selecton:");
             var input = Dialogs.promptInt("[1:Buy Animals] [2:Sell Animals] [3:Buy Food] " +
                     "[4:Exit Store]", 1, 4);
             switch (input) {
                 case 1:    ;
                 case 2:    ;
-                case 3:  buyFood(); break;
+                case 3:  buyFood(player); break;
                 case 4: { instore = false;
                           break;
                         }
@@ -25,57 +26,51 @@ public class Store {
         }
     }
 
-    public static void buyFood() {
-        var inFood = true;
+    public static void buyFood(Player player) {
+        var buying = true;
         //select food
-        while (inFood) {
+        while (buying) {
+            Dialogs.clear();
             //display player food and cash
-            //Dialogs.clear();
-            System.out.println("You have: " + Player.cash + "€. Your food inventory:");
-            System.out.println(Collections.singletonList(Player.foodInv));
-
-            var input = Dialogs.promptInt("Store stock: [1:Food1 10€/kg] [2:Food2 10€/kg] [3:Food3 10€/kg] " +
+            System.out.println("You have: " + player.getCash() + "€. Your food inventory (kilos):");
+            System.out.println(Collections.singletonList(player.getFoodInv()));
+            //select what to buy
+            int input = Dialogs.promptInt("Store stock: [1:Cheezeburgers 10€/kg] [2:Food2 10€/kg] [3:Food3 10€/kg] " +
                     "[4:Food4 10€/kg] [5:Food5 10€/kg] [6:Done]", 1, 6);
             switch (input) {
-                case 1 -> purchaseAmount(1, 10);
-                case 2 -> purchaseAmount(2, 10);
-                case 3 -> purchaseAmount(3, 10);
-                case 4 -> purchaseAmount(4, 10);
-                case 5 -> purchaseAmount(5, 10);
-                case 6 -> inFood = false;
+                case 1 -> buyKilos(player,"Cheezeburgers",10);
+                case 2 -> buyKilos(player,"Cheezeburgers",10);
+                case 3 -> buyKilos(player,"Cheezeburgers",10);
+                case 4 -> buyKilos(player,"Cheezeburgers",10);
+                case 5 -> buyKilos(player,"Cheezeburgers",10);
+                case 6 -> buying = false;
             }
         }
     }
 
     //amount to buy
-    public static void purchaseAmount(int foodtype, int price) {
+    public static void buyKilos(Player player, String foodType, int price) {
 
-        /*
-        var foodName = "empty";
-        switch (foodtype) {
-            case 1 ->  //{Hay hay = new Hay();}
-            case 2 -> foodName = "Food2";
-            case 3 -> foodName = "Food3";
-            case 4 -> foodName = "Food4";
-            case 5 -> foodName = "Food5";
+        System.out.println("You can afford max " + (player.getCash() / price) + " kilos of " + foodType);
+        var input = Dialogs.promptInt("How many kilos do you want?",1, (player.getCash() / price));
+        switch (foodType) {
+            case "Cheezeburgers" -> buyCheezeburgers(player, foodType, input, price);
         }
-        System.out.println("You can afford max " + (Player.cash + " kilos of " + foodName));
-        var input = Dialogs.promptInt("How many kilos do you want?",
-                1, (Player.cash/price));
 
-        //add to hashmap
-        if (Player.foodInv.containsKey(foodName)) {
-            Integer count = Player.foodInv.get(foodName) + input;
-            Player.foodInv.put(foodName, count);
 
+
+    }
+        //add Cheezeburgers to hashmap
+        public static void buyCheezeburgers(Player player, String foodType, int input, int price) {
+        if (player.getFoodInv().containsKey(foodType)) {
+            int tmp = (int) player.getFoodInv().get(foodType);
+            player.getFoodInv().put(new Cheezeburgers().getClass().getSimpleName(), tmp+input);
         }
         else {
-            Player.foodInv.put(foodName, input);
+            player.getFoodInv().put(new Cheezeburgers().getClass().getSimpleName(), input);
         }
-
-        Player.cash = (Player.cash - (price * input));
-        */
-        //Player.actionTaken = true;
+        player.setCash(price * input);
+        Game.actionTaken = true;
 
 
     }
