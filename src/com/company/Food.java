@@ -2,5 +2,6 @@ package com.company;
 
 public abstract class Food {
 
-    int price;
+    protected int price;
+
 }
