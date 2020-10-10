@@ -9,6 +9,7 @@ public class Store {
 
         var instore = true;
         while (instore && !Player.actionTaken) {
+            Player.actionTaken = true; //TEMP!!
             Dialogs.clear();
             System.out.println("Welcome to the Extinct Animals store! Please make a selecton:");
             var input = Dialogs.promptInt("[1:Buy Animals] [2:Sell Animals] [3:Buy Food] " +
@@ -74,7 +75,7 @@ public class Store {
 
         Player.cash = (Player.cash - (price * input));
         */
-        Player.actionTaken = true;
+        //Player.actionTaken = true;
 
 
     }
