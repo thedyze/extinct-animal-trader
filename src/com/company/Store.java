@@ -1,15 +1,11 @@
 package com.company;
-
-import com.company.FoodSubClasses.Cheezeburgers;
-
-import java.util.Collections;
+import com.company.FoodSubClasses.*;
 
 public class Store {
 
-
     public static void storeFront(Player player) {
-
         var instore = true;
+
         while (instore && !Game.actionTaken) {
             Dialogs.clear();
             System.out.println("Welcome " + player.getName() + ", to the Extinct Animals store! Please make a selecton:");
@@ -32,14 +28,15 @@ public class Store {
         while (buying) {
             Dialogs.clear();
             //display player food and cash
-            System.out.println("You have: " + player.getCash() + "€. Your food inventory (kilos):");
-            System.out.println(Collections.singletonList(player.getFoodInv()));
+            System.out.println(player.getName() + ", you have: " + player.getCash() + "€. Your food inventory:");
+            //System.out.println(Collections.singletonList(player.getFoodInv()));
+            player.getFoodInv().forEach((key, value) -> System.out.println(key + ": " + value + " kgs"));
             //select what to buy
-            int input = Dialogs.promptInt("Store stock: [1:Cheezeburgers 10€/kg] [2:Food2 10€/kg] [3:Food3 10€/kg] " +
-                    "[4:Food4 10€/kg] [5:Food5 10€/kg] [6:Done]", 1, 6);
+            int input = Dialogs.promptInt("Store stock: [1:Cheezeburgers 10€/kg] [2:Lollipops 10€/kg]" +
+                    " [3:Food3 10€/kg] [4:Food4 10€/kg] [5:Food5 10€/kg] [6:Done]", 1, 6);
             switch (input) {
                 case 1 -> buyKilos(player,"Cheezeburgers",10);
-                case 2 -> buyKilos(player,"Cheezeburgers",10);
+                case 2 -> buyKilos(player,"Lollipops",20);
                 case 3 -> buyKilos(player,"Cheezeburgers",10);
                 case 4 -> buyKilos(player,"Cheezeburgers",10);
                 case 5 -> buyKilos(player,"Cheezeburgers",10);
@@ -51,27 +48,36 @@ public class Store {
     //amount to buy
     public static void buyKilos(Player player, String foodType, int price) {
 
-        System.out.println("You can afford max " + (player.getCash() / price) + " kilos of " + foodType);
-        var input = Dialogs.promptInt("How many kilos do you want?",1, (player.getCash() / price));
+        System.out.println("You can afford max " + (player.getCash() / price) + " kgs of " + foodType);
+        var kilos = Dialogs.promptInt("How many do you want?",1, (player.getCash() / price));
         switch (foodType) {
-            case "Cheezeburgers" -> buyCheezeburgers(player, foodType, input, price);
+            case "Cheezeburgers" -> buyCheezeburgers(player, foodType, kilos, price);
+            case "Lollipops" -> buyLollipops(player, foodType, kilos, price);
         }
-
-
-
     }
-        //add Cheezeburgers to hashmap
-        public static void buyCheezeburgers(Player player, String foodType, int input, int price) {
+    //add Foods to hashmap
+    static void buyCheezeburgers(Player player, String foodType, int kilos, int price) {
+
         if (player.getFoodInv().containsKey(foodType)) {
             int tmp = (int) player.getFoodInv().get(foodType);
-            player.getFoodInv().put(new Cheezeburgers().getClass().getSimpleName(), tmp+input);
+            player.getFoodInv().put(new Cheezeburgers().getClass().getSimpleName(), tmp+kilos);
         }
         else {
-            player.getFoodInv().put(new Cheezeburgers().getClass().getSimpleName(), input);
+            player.getFoodInv().put(new Cheezeburgers().getClass().getSimpleName(), kilos);
         }
-        player.setCash(price * input);
+        player.setCash(player.getCash() - (price * kilos));
         Game.actionTaken = true;
+    }
+    static void buyLollipops(Player player, String foodType, int kilos, int price) {
 
-
+        if (player.getFoodInv().containsKey(foodType)) {
+            int tmp = (int) player.getFoodInv().get(foodType);
+            player.getFoodInv().put(new Lollipops().getClass().getSimpleName(), tmp+kilos);
+        }
+        else {
+            player.getFoodInv().put(new Lollipops().getClass().getSimpleName(), kilos);
+        }
+        player.setCash(player.getCash() - (price * kilos));
+        Game.actionTaken = true;
     }
 }

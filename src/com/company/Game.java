@@ -42,7 +42,7 @@ public class Game {
         //welcome
         Dialogs.clear();
         System.out.println("      Welcome to: \n \u001B[1mEXTINCT ANIMAL TRADER\033[0;0m \n ----------------------\n");
-        var input = Dialogs.promptInt("Press 1 for new game :>", 1, 1);
+        var input = Dialogs.promptInt("Press 1 for new game:", 1, 1);
         players = Dialogs.promptInt("How many players? (1-4)", 1, 4);
 
         //add players

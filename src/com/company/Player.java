@@ -25,8 +25,8 @@ public class Player {
         return this.cash;
     }
 
-    public int setCash(int price) {
-         this.cash = cash - price;
+    public int setCash(int balance) {
+         this.cash = balance;
          return this.cash;
     }
 
