@@ -24,16 +24,5 @@ public class Player {
     public int getCash() {
         return this.cash;
     }
-    public static void playerAction() {
-        var input = Dialogs.promptInt("\nChoose your action:\n [1:Visit Store] [2:Feed Animals] [3:Mate Animals]"
-                , 1, 3);
 
-        switch (input) {
-            case 1: Store.menu();
-
-            case 2: //feedAnimals();
-            case 3: //mateAnimals();
-        }
-
-    }
 }
