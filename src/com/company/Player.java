@@ -4,19 +4,35 @@ import java.util.*;
 
 public class Player {
 
-    //public static boolean actionTaken = false;
-    private HashMap <Food, Integer> foodInv;
+    protected ArrayList<Animal> animalInv;
+    protected HashMap <Food, Integer> foodInv;
     private String name;
-    private int pNumber;
+    //private int pNumber;
     private int cash;
 
     public Player(String name, int pNumber) {
-        this.name = name;
-        this.pNumber = pNumber;
-        cash = 10000;
+        animalInv = new ArrayList<>();
         foodInv = new HashMap<>();
+        this.name = name;
+        //this.pNumber = pNumber;
+        cash = 10000;
+
+    }
+    public ArrayList getAnimalInv() {
+        return this.animalInv;
+    }
+    public void setAnimalInv(ArrayList<Animal> animalInv) {
+        this.animalInv = animalInv;
     }
 
+    public Map getFoodInv() {
+        return this.foodInv;
+    }
+
+    public Map setFoodInv(HashMap<Food,Integer> food) {
+        this.foodInv = food;
+        return this.foodInv;
+    }
     public String getName() {
         return this.name;
     }
@@ -30,13 +46,6 @@ public class Player {
          return this.cash;
     }
 
-    public Map getFoodInv() {
-        return this.foodInv;
-    }
-    /*
-    public HashMap<Food, Integer> setFoodInv(HashMap<Food,Integer> food) {
-        this.foodInv = food;
-        return this.foodInv;
-    } */
+
 
 }
