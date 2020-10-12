@@ -1,5 +1,7 @@
 package com.company;
+import com.company.AnimalSubClasses.Mammoth;
 import com.company.FoodSubClasses.*;
+import java.util.*;
 
 public class Store {
 
@@ -12,7 +14,7 @@ public class Store {
             var input = Dialogs.promptInt("[1:Buy Animals] [2:Sell Animals] [3:Buy Food] " +
                     "[4:Exit Store]", 1, 4);
             switch (input) {
-                case 1:    ;
+                case 1:  buyAnimals(player); break;
                 case 2:    ;
                 case 3:  buyFood(player); break;
                 case 4: { instore = false;
@@ -20,6 +22,54 @@ public class Store {
                         }
             }
         }
+    }
+    public static void buyAnimals(Player player) {
+        var buying = true;
+        //select food
+        while (buying) {
+            int price = 0;
+            String animalType = "";
+            String gender = "";
+
+            //display player cash and animals
+            Dialogs.clear();
+            System.out.println(player.getName() + ", you have: " + player.getCash() + "€. Your animal inventory:");
+            player.animalInv.forEach(Animal -> {
+                var className = Animal.getClass().getSimpleName();
+                var animalName = Animal.name;
+                var animalGender = Animal.gender;
+                var animalHealth = Animal.getHealth();
+                System.out.println(className + " " + "'" + animalName +"' (" +animalGender +") Health: " + animalHealth);
+            });
+
+            //select what to buy
+            int input = Dialogs.promptInt("Store stock: [1:Mammoth 250€] [6:Done]", 1, 6);
+
+            switch (input) {
+                case 1 -> { animalType = "Mammoth"; price = 250;}
+                case 6 -> { buying = false; continue;}
+            }
+            String name = Dialogs.prompt("Choose animal name:");
+            int tempgender = Dialogs.promptInt("Which gender? [1:Female] [2:Male]",1,2);
+            switch (tempgender) {
+                case 1 -> gender = "female";
+                case 2 -> gender = "male";
+            }
+
+            switch (animalType) {
+                case "Mammoth" -> buyMammoths(player, price, name, gender);
+            }
+
+        }
+    }
+    public static void buyMammoths(Player player, int price, String name, String gender){
+        Mammoth mammoth = new Mammoth(name,gender);
+        ArrayList<Animal> temp = player.getAnimalInv();
+        temp.add(mammoth);
+        player.setAnimalInv(temp);
+        player.setCash(player.getCash() - price);
+        Game.actionTaken = true;
+
     }
 
     public static void buyFood(Player player) {
@@ -29,8 +79,10 @@ public class Store {
             Dialogs.clear();
             //display player food and cash
             System.out.println(player.getName() + ", you have: " + player.getCash() + "€. Your food inventory:");
+            player.getFoodInv().forEach((key, value) ->
+                    System.out.println(key.getClass().getSimpleName() + ": " + value + " kgs"));
             //System.out.println(Collections.singletonList(player.getFoodInv()));
-            player.getFoodInv().forEach((key, value) -> System.out.println(key + ": " + value + " kgs"));
+
             //select what to buy
             int input = Dialogs.promptInt("Store stock: [1:Cheezeburgers 10€/kg] [2:Lollipops 10€/kg]" +
                     " [3:Food3 10€/kg] [4:Food4 10€/kg] [5:Food5 10€/kg] [6:Done]", 1, 6);
@@ -57,13 +109,21 @@ public class Store {
     }
     //add Foods to hashmap
     static void buyCheezeburgers(Player player, String foodType, int kilos, int price) {
+        Cheezeburgers cheezeburgers = new Cheezeburgers();
+        if (player.getFoodInv().containsKey(cheezeburgers)) {
+            int tmp = player.foodInv.get(cheezeburgers);
+            System.out.println("temp" + tmp);
+            //int tmp = ((int) player.getFoodInv().get(foodType));
+            //player.foodInv.computeIfPresent(cheezeburgers, (k, v) -> (v + kilos));
+            //player.getFoodInv().merge(cheezeburgers, 1, (prev, kilos) -> tmp + kilos);
 
-        if (player.getFoodInv().containsKey(foodType)) {
-            int tmp = (int) player.getFoodInv().get(foodType);
             player.getFoodInv().put(new Cheezeburgers().getClass().getSimpleName(), tmp+kilos);
+            //player.getFoodInv().put(cheezeburgers, tmp+kilos);
         }
         else {
-            player.getFoodInv().put(new Cheezeburgers().getClass().getSimpleName(), kilos);
+            //player.foodInv.put(cheezeburgers, kilos);
+            player.getFoodInv().put(cheezeburgers, kilos);
+            //player.getFoodInv().put(new Cheezeburgers().getClass().getSimpleName(), kilos);
         }
         player.setCash(player.getCash() - (price * kilos));
         Game.actionTaken = true;
