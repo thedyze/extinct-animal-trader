@@ -51,12 +51,14 @@ public class Player {
     public void showCashNAnimals() {
         System.out.println(this.name + ", you have: " + this.cash + "€. Your animal inventory:");
         animalInv.forEach(Animal -> {
+            int index = getAnimalInv().indexOf(Animal);
             var className = Animal.getClass().getSimpleName();
             var animalName = Animal.name;
             var animalGender = Animal.gender;
             var animalHealth = Animal.getHealth();
             //var salePrice = animal.getBuyPrice();
-            System.out.println(className + " " + "'" + animalName +"' (" +animalGender +") Health: " + animalHealth);
+            System.out.println((index+1) + ": " + className + " " + "'" + animalName +"' (" +animalGender +
+                    ") Health: " + animalHealth + "\n");
         });
     }
     public void showCashNFood() {

@@ -28,29 +28,14 @@ public class Store {
     }
     public static void sellAnimal(Player player) {
         player.showCashNAnimals();
-        String animalToSell = Dialogs.prompt("Type the name of the animal you want to sell:");
-        Predicate<Animal> condition = animal -> animal.getName().matches(animalToSell);
-        player.animalInv.removeIf(condition);
+        int animalToSell = Dialogs.promptInt("Number of the animal you want to sell:",
+                1,player.animalInv.size()+1);
+        int sellPrice = player.animalInv.get(animalToSell-1).getBuyPrice();
+        player.setCash(player.getCash() + sellPrice);
+        player.animalInv.remove(animalToSell-1);
         Game.actionsTaken = true;
-        //ArrayList<Animal> temp = getAnimalInv();
-        //var temp = animal.getName().matches(animalToSell);
-        /*
-        player.animalInv.forEach(Animal -> {
-            var animalName = Animal.name;
-            //if (temp.matches(animalName))
-            if (animalName == (animalToSell)) {
-
-                //cash = (cash +animal.getBuyPrice());
-                player.animalInv.remove(Animal);
-                //setAnimalInv(temp);
-
-            }
-        });
-
-         */
-        //int saleprice = animal.getBuyPrice();
-        //cash = (cash + salePrice);
-
+        //Predicate<Animal> condition = animal -> animal.getName().matches(animalToSell);
+        //player.animalInv.removeIf(condition);
     }
     public static void buyAnimals(Player player) {
         var buying = true;
