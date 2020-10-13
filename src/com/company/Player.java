@@ -46,22 +46,24 @@ public class Player {
          this.cash = balance;
          return this.cash;
     }
-    public void showCashNAnimals() {
+    public void showStatsNAnimals() {
         if (animalInv.size() > 0) {
-            System.out.println(this.name + ", you have: " + this.cash + "€. Your animal inventory:");
+            System.out.println("Player: " + this.name + ", you have: " + this.cash + "€. Your animals:");
             animalInv.forEach(Animal -> {
                 int index = getAnimalInv().indexOf(Animal);
                 var className = Animal.getClass().getSimpleName();
                 var animalName = Animal.name;
                 var animalGender = Animal.gender;
                 var animalHealth = Animal.getHealth();
-                //var salePrice = animal.getBuyPrice();
                 System.out.println((index+1) + ": " + className + " " + "'" + animalName +
                 "' (" +animalGender +") Health: " + animalHealth + "");
                 });
+            System.out.println("");
         }
-        else {System.out.println(this.name + ", you have: " + this.cash + "€.");}
-        //System.out.println("\n");
+        else {System.out.println("Player: " + this.name + ", you have: " + this.cash + "€.");
+              System.out.println("");
+        }
+
 
     }
 
