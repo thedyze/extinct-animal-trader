@@ -12,7 +12,7 @@ public class Store {
         while (inStore && !Game.actionsTaken) {
             Dialogs.clear();
             //store menu
-            player.showCashNAnimals();
+            player.showStatsNAnimals();
             System.out.println("Welcome to the Extinct Animals store! Please make a selection:");
             var input = Dialogs.promptInt("[1:Buy Animals] [2:Sell Animals] [3:Buy Food] " +
                     "[4:Exit Store]", 1, 4);
@@ -28,7 +28,7 @@ public class Store {
 
 
     public static void sellAnimal(Player player) {
-        player.showCashNAnimals();
+        player.showStatsNAnimals();
         int animalToSell = Dialogs.promptInt("Number of the animal you want to sell:",
                 1,player.animalInv.size()+1);
         int sellPrice = player.animalInv.get(animalToSell-1).getBuyPrice();
@@ -46,9 +46,8 @@ public class Store {
             int price = 0;
             String animalType = "";
             String gender = "";
-
             Dialogs.clear();
-            player.showCashNAnimals();
+            player.showStatsNAnimals();
             //select what to buy
             int input = Dialogs.promptInt("Available animals: [1:Mammoth 250€] [6:Done]", 1, 6);
             switch (input) {
