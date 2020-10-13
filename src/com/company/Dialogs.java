@@ -27,7 +27,13 @@ public class Dialogs {
         return num < min || num > max ?
                 promptInt(question, min, max) : num;
     }
-
+    static public void enterToContinue()
+    {
+        System.out.println("Press Enter key to continue...");
+        //Scanner s = new Scanner(System.in);
+        scanner.nextLine();
+    }
+    /*
     static public int menu(String menuName, String ...options){
         // print the menu
         clear();
@@ -51,5 +57,5 @@ public class Dialogs {
         return choice < 1 || choice > options.length ?
                 menu(menuName, options) : choice;
     }
-
+*/
 }
