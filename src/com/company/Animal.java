@@ -13,7 +13,11 @@ public abstract class Animal {
 
     }
     public int getHealth(){
-        this.health = health;
+        //this.health = health;
+        return this.health;
+    }
+    public int setHealth(int reduceHealth){
+        this.health = health - reduceHealth;
         return this.health;
     }
     public String getName() {

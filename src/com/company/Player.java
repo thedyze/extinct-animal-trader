@@ -8,7 +8,6 @@ public class Player {
     protected ArrayList<Animal> animalInv;
     protected HashMap <Food, Integer> foodInv;
     private final String name;
-    //private int pNumber;
     private int cash;
 
     public Player(String name) {
@@ -70,11 +69,17 @@ public class Player {
     }
 
     public void showCashNFood() {
-        System.out.println(this.name + ", you have: " + this.cash + "€. Your food inventory:");
+        System.out.println("Player: \u001B[1m" + this.name +
+                "\033[0;0m, you have: \u001B[1m" + this.cash + "€\033[0;0m. Your food inventory:");
         getFoodInv().forEach((key, value) ->
                 System.out.println(key.getClass().getSimpleName() + ": " + value + " kgs"));
     }
 
-
+    public void reduceAnimalHealth() {
+        animalInv.forEach(Animal -> {
+            int reduceHealth = (int)(Math.random() * 21)+10;
+             Animal.setHealth(reduceHealth);
+        });
+    }
 
 }

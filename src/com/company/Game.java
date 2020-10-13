@@ -22,6 +22,7 @@ public class Game {
                 System.out.println("Game turn: \u001B[1m" + turn + "/" + totalTurns +"\033[0;0m");
                 player.showStatsNAnimals();
                 playerAction(player);
+                player.reduceAnimalHealth();
             }
         }
 
