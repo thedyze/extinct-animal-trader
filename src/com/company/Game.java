@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Game {
     public static ArrayList<Player> players = new ArrayList<>();
-    public static boolean actionTaken;
+    public static boolean actionsTaken;
     //loop game turns
     static void turn(int totalPlayers, int totalTurns) {
         int turn;
@@ -14,7 +14,7 @@ public class Game {
             Player player;
             for (int i = 0; i < totalPlayers; i++) {
                 Dialogs.clear();
-                actionTaken = false;
+                actionsTaken = false;
                 player = players.get(i);
                 System.out.println("Turn: " + turn + "/" + totalTurns +". Player: " + player.getName() + ", you have "
                         + player.getCash() + "€.");

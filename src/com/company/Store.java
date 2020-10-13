@@ -2,20 +2,23 @@ package com.company;
 import com.company.AnimalSubClasses.Mammoth;
 import com.company.FoodSubClasses.*;
 import java.util.*;
+import java.util.function.Predicate;
 
 public class Store {
 
     public static void storeFront(Player player) {
         var instore = true;
-
-        while (instore && !Game.actionTaken) {
+        //dont exit until player has made his actions
+        while (instore && !Game.actionsTaken) {
             Dialogs.clear();
+            //store menu
+            player.showCashNAnimals();
             System.out.println("Welcome " + player.getName() + ", to the Extinct Animals store! Please make a selecton:");
             var input = Dialogs.promptInt("[1:Buy Animals] [2:Sell Animals] [3:Buy Food] " +
                     "[4:Exit Store]", 1, 4);
             switch (input) {
                 case 1:  buyAnimals(player); break;
-                case 2:    ;
+                case 2:  sellAnimal(player); break;
                 case 3:  buyFood(player); break;
                 case 4: { instore = false;
                           break;
@@ -23,28 +26,45 @@ public class Store {
             }
         }
     }
+    public static void sellAnimal(Player player) {
+        player.showCashNAnimals();
+        String animalToSell = Dialogs.prompt("Type the name of the animal you want to sell:");
+        Predicate<Animal> condition = animal -> animal.getName().matches(animalToSell);
+        player.animalInv.removeIf(condition);
+        Game.actionsTaken = true;
+        //ArrayList<Animal> temp = getAnimalInv();
+        //var temp = animal.getName().matches(animalToSell);
+        /*
+        player.animalInv.forEach(Animal -> {
+            var animalName = Animal.name;
+            //if (temp.matches(animalName))
+            if (animalName == (animalToSell)) {
+
+                //cash = (cash +animal.getBuyPrice());
+                player.animalInv.remove(Animal);
+                //setAnimalInv(temp);
+
+            }
+        });
+
+         */
+        //int saleprice = animal.getBuyPrice();
+        //cash = (cash + salePrice);
+
+    }
     public static void buyAnimals(Player player) {
         var buying = true;
         //select food
         while (buying) {
+
             int price = 0;
             String animalType = "";
             String gender = "";
 
-            //display player cash and animals
             Dialogs.clear();
-            System.out.println(player.getName() + ", you have: " + player.getCash() + "€. Your animal inventory:");
-            player.animalInv.forEach(Animal -> {
-                var className = Animal.getClass().getSimpleName();
-                var animalName = Animal.name;
-                var animalGender = Animal.gender;
-                var animalHealth = Animal.getHealth();
-                System.out.println(className + " " + "'" + animalName +"' (" +animalGender +") Health: " + animalHealth);
-            });
-
+            player.showCashNAnimals();
             //select what to buy
-            int input = Dialogs.promptInt("Store stock: [1:Mammoth 250€] [6:Done]", 1, 6);
-
+            int input = Dialogs.promptInt("Available animals: [1:Mammoth 250€] [6:Done]", 1, 6);
             switch (input) {
                 case 1 -> { animalType = "Mammoth"; price = 250;}
                 case 6 -> { buying = false; continue;}
@@ -68,7 +88,7 @@ public class Store {
         temp.add(mammoth);
         player.setAnimalInv(temp);
         player.setCash(player.getCash() - price);
-        Game.actionTaken = true;
+        Game.actionsTaken = true;
 
     }
 
@@ -77,12 +97,7 @@ public class Store {
         //select food
         while (buying) {
             Dialogs.clear();
-            //display player food and cash
-            System.out.println(player.getName() + ", you have: " + player.getCash() + "€. Your food inventory:");
-            player.getFoodInv().forEach((key, value) ->
-                    System.out.println(key.getClass().getSimpleName() + ": " + value + " kgs"));
-            //System.out.println(Collections.singletonList(player.getFoodInv()));
-
+            player.showCashNFood();
             //select what to buy
             int input = Dialogs.promptInt("Store stock: [1:Cheezeburgers 10€/kg] [2:Lollipops 10€/kg]" +
                     " [3:Food3 10€/kg] [4:Food4 10€/kg] [5:Food5 10€/kg] [6:Done]", 1, 6);
@@ -126,7 +141,7 @@ public class Store {
             //player.getFoodInv().put(new Cheezeburgers().getClass().getSimpleName(), kilos);
         }
         player.setCash(player.getCash() - (price * kilos));
-        Game.actionTaken = true;
+        Game.actionsTaken = true;
     }
     static void buyLollipops(Player player, String foodType, int kilos, int price) {
 
@@ -138,6 +153,6 @@ public class Store {
             player.getFoodInv().put(new Lollipops().getClass().getSimpleName(), kilos);
         }
         player.setCash(player.getCash() - (price * kilos));
-        Game.actionTaken = true;
+        Game.actionsTaken = true;
     }
 }
