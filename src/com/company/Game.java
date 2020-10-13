@@ -19,7 +19,7 @@ public class Game {
                 Dialogs.clear();
                 actionsTaken = false;
                 player = players.get(i);
-                System.out.println("Game turn: " + turn + "/" + totalTurns +".");
+                System.out.println("Game turn: \u001B[1m" + turn + "/" + totalTurns +"\033[0;0m");
                 player.showStatsNAnimals();
                 playerAction(player);
             }
@@ -29,7 +29,7 @@ public class Game {
 
     static public void playerAction(Player player) {
         //while (Game.actionsTaken = false){
-        var input = Dialogs.promptInt("\nChoose your action:\n [1:Visit Store] [2:Feed Animals] [3:Mate Animals]"
+        var input = Dialogs.promptInt("\nChoose your action:\n [1.Visit Store] [2.Feed Animals] [3.Mate Animals]"
                 , 1, 3);
 
         switch (input) {
@@ -87,7 +87,6 @@ public class Game {
                 if (rand2) {gender = "male";}
                 else {gender = "female";}
                 String name = Dialogs.prompt("Success!! It's a " + gender + "! Choose baby animal name:");
-
                 Store.buyMammoths(player, 0, name, gender);
                 Game.actionsTaken = true;
             }

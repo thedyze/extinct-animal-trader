@@ -14,8 +14,8 @@ public class Store {
             //store menu
             player.showStatsNAnimals();
             System.out.println("Welcome to the Extinct Animals store! Please make a selection:");
-            var input = Dialogs.promptInt("[1:Buy Animals] [2:Sell Animals] [3:Buy Food] " +
-                    "[4:Exit Store]", 1, 4);
+            var input = Dialogs.promptInt("[1.Buy Animals] [2.Sell Animals] [3.Buy Food] " +
+                    "[4.Exit Store]", 1, 4);
             switch (input) {
                 case 1 -> buyAnimals(player); //break;
                 case 2 -> sellAnimal(player); //break;
@@ -49,19 +49,18 @@ public class Store {
             Dialogs.clear();
             player.showStatsNAnimals();
             //select what to buy
-            int input = Dialogs.promptInt("Available animals: [1:Mammoth 250€] [6:Done]", 1, 6);
+            int input = Dialogs.promptInt("Available animals: [1.Mammoth 250€] [6.Done]", 1, 6);
             switch (input) {
                 case 1 -> { animalType = "Mammoth"; price = 250;}
                 case 6 -> { buying = false;}
             }
             if (buying == true) {
-                String name = Dialogs.prompt("Choose animal name:");
-                int tmpGender = Dialogs.promptInt("Which gender? [1:Female] [2:Male]", 1, 2);
+                int tmpGender = Dialogs.promptInt("Which gender? [1.Female] [2.Male]", 1, 2);
                 switch (tmpGender) {
                     case 1 -> gender = "female";
                     case 2 -> gender = "male";
                 }
-
+                String name = Dialogs.prompt("Animal name:");
                 switch (animalType) {
                     case "Mammoth" -> buyMammoths(player, price, name, gender);
                 }
