@@ -7,23 +7,21 @@ public class Player {
 
     protected ArrayList<Animal> animalInv;
     protected HashMap <Food, Integer> foodInv;
-    private String name;
+    private final String name;
     //private int pNumber;
     private int cash;
-    private Animal animal;
-    private Animal animal1;
 
-    public Player(String name, int pNumber) {
+    public Player(String name) {
         animalInv = new ArrayList<>();
         foodInv = new HashMap<>();
         this.name = name;
         //this.pNumber = pNumber;
         cash = 10000;
-
     }
     public ArrayList getAnimalInv() {
         return this.animalInv;
     }
+
     public void setAnimalInv(ArrayList<Animal> animalInv) {
         this.animalInv = animalInv;
     }
@@ -49,23 +47,30 @@ public class Player {
          return this.cash;
     }
     public void showCashNAnimals() {
-        System.out.println(this.name + ", you have: " + this.cash + "€. Your animal inventory:");
-        animalInv.forEach(Animal -> {
-            int index = getAnimalInv().indexOf(Animal);
-            var className = Animal.getClass().getSimpleName();
-            var animalName = Animal.name;
-            var animalGender = Animal.gender;
-            var animalHealth = Animal.getHealth();
-            //var salePrice = animal.getBuyPrice();
-            System.out.println((index+1) + ": " + className + " " + "'" + animalName +"' (" +animalGender +
-                    ") Health: " + animalHealth + "\n");
-        });
+        if (animalInv.size() > 0) {
+            System.out.println(this.name + ", you have: " + this.cash + "€. Your animal inventory:");
+            animalInv.forEach(Animal -> {
+                int index = getAnimalInv().indexOf(Animal);
+                var className = Animal.getClass().getSimpleName();
+                var animalName = Animal.name;
+                var animalGender = Animal.gender;
+                var animalHealth = Animal.getHealth();
+                //var salePrice = animal.getBuyPrice();
+                System.out.println((index+1) + ": " + className + " " + "'" + animalName +
+                "' (" +animalGender +") Health: " + animalHealth + "");
+                });
+        }
+        else {System.out.println(this.name + ", you have: " + this.cash + "€.");}
+        //System.out.println("\n");
+
     }
+
     public void showCashNFood() {
         System.out.println(this.name + ", you have: " + this.cash + "€. Your food inventory:");
         getFoodInv().forEach((key, value) ->
                 System.out.println(key.getClass().getSimpleName() + ": " + value + " kgs"));
     }
+
 
 
 }
