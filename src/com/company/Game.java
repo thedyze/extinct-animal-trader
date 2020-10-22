@@ -5,8 +5,6 @@ import java.util.ArrayList;
 public class Game {
     public static ArrayList<Player> players = new ArrayList<>();
     public static boolean actionsTaken;
-    public int turn;
-    public int totalTurns;
 
     //loop game turns
     static void turn(int totalPlayers, int totalTurns) {
@@ -20,34 +18,35 @@ public class Game {
                 actionsTaken = false;
                 player = players.get(i);
                 System.out.println("Game turn: \u001B[1m" + turn + "/" + totalTurns +"\033[0;0m");
-                player.showStatsNAnimals();
+                player.removeDeadAnimals();
                 playerAction(player);
                 player.reduceAnimalHealth();
+
             }
         }
 
     }
 
     static public void playerAction(Player player) {
-        //while (Game.actionsTaken = false){
-        var input = Dialogs.promptInt("\nChoose your action:\n [1.Visit Store] [2.Feed Animals] [3.Mate Animals]"
+        while (!Game.actionsTaken){
+            player.showStats();
+            var input = Dialogs.promptInt("\nChoose your action:\n [1.Visit Store] " +
+                            "[2.Feed Animals] [3.Mate Animals]"
                 , 1, 3);
 
-        switch (input) {
-            case 1 -> {
-                Store.storeFront(player);
-                break;
-            }
+            switch (input) {
+                case 1 -> {Store.storeFront(player);
+                            break;
+                            }
             case 2 -> System.out.println("2"); //feedAnimals();
-            case 3 -> {
-                mateAnimals(player);
-                break;
-            }
+            case 3 -> {mateAnimals(player);
+                        break;
+                        }
         }
-        //}
+        }
     }
 
-    static void init() {
+    static void newGame() {
         int players;
         int totalTurns;
         //welcome
@@ -69,17 +68,16 @@ public class Game {
 
     static void mateAnimals(Player player) {
         Dialogs.clear();
-        player.showStatsNAnimals();
+        player.showStats();
         //setup mating variables
-        int mate1 = Dialogs.promptInt("First animal to mate:",
-                1, player.animalInv.size() + 1) - 1;
-        int mate2 = Dialogs.promptInt("Second animal to mate:",
-                1, player.animalInv.size() + 1) - 1;
+        int mate1 = Dialogs.promptInt("First animal to mate:",1, player.animalInv.size() + 1) - 1;
+        int mate2 = Dialogs.promptInt("Second animal to mate:",1, player.animalInv.size() + 1) - 1;
         Object animalType1 = player.animalInv.get(mate1).getClass().getSimpleName();
         Object animalType2 = player.animalInv.get(mate2).getClass().getSimpleName();
         String gender1 = player.animalInv.get(mate1).gender;
         String gender2 = player.animalInv.get(mate2).gender;
-        //try to mate
+
+        //try to mate (not with self, only with same animal type, and different gender)
         if (!(mate1 == mate2) && (animalType1 == animalType2) && !(gender1 == gender2)) {
             boolean rand = Math.random() < 0.5;
             if (rand) {
@@ -88,7 +86,7 @@ public class Game {
                 if (rand2) {gender = "male";}
                 else {gender = "female";}
                 String name = Dialogs.prompt("Success!! It's a " + gender + "! Choose baby animal name:");
-                Store.buyMammoths(player, 0, name, gender);
+                Store.buyAnimal(player, 0, name, gender, "Mammoth");
                 Game.actionsTaken = true;
             }
             else {
@@ -108,6 +106,7 @@ public class Game {
         }
 
     }
+
 
 }
 
