@@ -14,8 +14,8 @@ public abstract class Food {
     public int getQuantity(){
         return this.quantity;
     }
-    public int setQuantity(int tmpQuantity){
-        this.quantity = tmpQuantity;
+    public int setQuantity(int quantity){
+        this.quantity = quantity;
         return this.quantity;
     }
     public int getType(){
