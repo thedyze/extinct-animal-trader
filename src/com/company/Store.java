@@ -89,21 +89,14 @@ public class Store {
 
         boolean existingFood = false;
 
-        for (Object obj : temp) {
-            if (obj.getClass().equals(newFood.getClass())) {
-                //newFood.setQuantity(newFood.getQuantity()+kilos);
-                newFood.setQuantity(newFood.getQuantity()+kilos);
+        for (Food food : temp) {
+            if (food.getClass().equals(newFood.getClass())) {
+                food.setQuantity(food.getQuantity()+kilos);
                 player.setCash(player.getCash() - (price * kilos));
                 Game.actionsTaken = true;
-
                 existingFood = true;
             }
         }
-
-
-
-        //System.out.println(exists);
-        //System.out.println(newFood.getClass().getSimpleName());
 
         if (!existingFood){
             temp.add(newFood);
@@ -112,20 +105,7 @@ public class Store {
             Game.actionsTaken = true;
         }
 
-        else if (existingFood) { /*
-            for (Food food : temp) {
-
-                if (food.getType()==1) {
-                    food.setQuantity(food.getQuantity()+kilos);
-
-                    player.setCash(player.getCash() - (price * kilos));
-                    Game.actionsTaken = true;
-                    Dialogs.enterToContinue();
-                    break;
-                }
-            }
-
-        */
+        else if (existingFood) {
             player.setFoodInv(temp);
         }
     }
