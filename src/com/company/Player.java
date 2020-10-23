@@ -1,13 +1,13 @@
 package com.company;
-
-import java.sql.SQLOutput;
+import com.company.FoodSubClasses.*;
+import com.company.AnimalSubClasses.*;
 import java.util.*;
 
 
 public class Player {
 
     protected ArrayList<Animal> animalInv;
-    private ArrayList<Food> foodInv;
+    protected ArrayList<Food> foodInv;
     //private HashMap <Food, Integer> foodInv;
     private final String name;
     private int cash;
@@ -18,7 +18,7 @@ public class Player {
         //foodInv = new HashMap<>();
         this.name = name;
         //this.pNumber = pNumber;
-        cash = 250;
+        cash = 300;
     }
     public ArrayList getAnimalInv() {
         return this.animalInv;
@@ -29,24 +29,13 @@ public class Player {
     }
 
     public ArrayList getFoodInv() {
-        return this.animalInv;
+        return this.foodInv;
     }
 
     public void setFoodInv(ArrayList<Food> foodInv) {
         this.foodInv = foodInv;
     }
 
-    /*
-    public HashMap<Food, Integer> getFoodInv() {
-        return this.foodInv;
-    }
-
-    public void setFoodInv(HashMap<Food,Integer> foodInv) {
-        this.foodInv = foodInv;
-        //return this.foodInv;
-    }
-
-     */
     public String getName() {
         return this.name;
     }
@@ -63,12 +52,12 @@ public class Player {
         if (animalInv.size() > 0) {
             System.out.println("Player: \u001B[1m" + this.name +
                     "\033[0;0m, you have: \u001B[1m" + this.cash + "€\033[0;0m\nYour animals:");
-            animalInv.forEach(Animal -> {
-                int index = getAnimalInv().indexOf(Animal);
-                var className = Animal.getClass().getSimpleName();
-                var animalName = Animal.getName();
-                var animalGender = Animal.gender;
-                var animalHealth = Animal.getHealth();
+            animalInv.forEach(x -> {
+                int index = getAnimalInv().indexOf(x);
+                var className = x.getClass().getSimpleName();
+                var animalName = x.getName();
+                var animalGender = x.gender;
+                var animalHealth = x.getHealth();
                 System.out.println((index+1) + ": " + className + " " + "'" + animalName +
                 "' (" +animalGender +") Health: " + animalHealth + "");
                 });
@@ -85,30 +74,31 @@ public class Player {
     public void showCashNFood() {
         System.out.println("Player: \u001B[1m" + this.name +
                 "\033[0;0m, you have: \u001B[1m" + this.cash + "€\033[0;0m. Your food inventory:");
-            foodInv.forEach(Food -> {
-                int index = getFoodInv().indexOf(Food);
-                var className = Food.getClass().getSimpleName();
-                var amount = Food.getQuantity();
-                System.out.println((index+1) + " " + className + " " + amount);
+            this.foodInv.forEach(foodItem -> {
+                int index = getFoodInv().indexOf(foodItem);
+                var className = foodItem.getClass().getSimpleName();
+                var amount = foodItem.getQuantity();
+                System.out.println((index+1) + " " + className + " " + amount + "kgs");
             });
         //getFoodInv().forEach((key, value) ->
         //        System.out.println(key.getClass().getSimpleName() + ": " + value + " kgs"));
     }
 
     public void reduceAnimalHealth() {
-        animalInv.forEach(Animal -> {
+        animalInv.forEach(x -> {
             int reduceHealth = (int)(Math.random() * 21)+10;
-             Animal.setHealth(reduceHealth);
+             x.setHealth(reduceHealth);
         });
     }
+
     public void removeDeadAnimals() {
-        animalInv.forEach(Animal -> {
-            if (Animal.getHealth() <=0) {
-                System.out.println(Animal.getClass().getSimpleName() + ": " + Animal.getName() + " is dead :(");
+        animalInv.forEach(x -> {
+            if (x.getHealth() <=0) {
+                System.out.println(x.getClass().getSimpleName() + ": " + x.getName() + " is dead :(");
                 Dialogs.enterToContinue();
             }
         });
-        animalInv.removeIf(Animal -> (Animal.getHealth() <= 0));
+        animalInv.removeIf(x -> (x.getHealth() <= 0));
         //}
     }
         /*
@@ -121,5 +111,16 @@ public class Player {
 
 
     }
+
+    public HashMap<Food, Integer> getFoodInv() {
+        return this.foodInv;
+    }
+
+    public void setFoodInv(HashMap<Food,Integer> foodInv) {
+        this.foodInv = foodInv;
+        //return this.foodInv;
+    }
+
+
     */
 }

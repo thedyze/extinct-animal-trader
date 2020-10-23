@@ -1,17 +1,25 @@
 package com.company;
 import java.util.ArrayList;
-
+import com.company.FoodSubClasses.*;
+import com.company.AnimalSubClasses.*;
 
 public class Game {
     public static ArrayList<Player> playerList = new ArrayList<>();
+    public static ArrayList<Player> toRemoveList;
     public static boolean actionsTaken;
-    public static int totalPlayers= playerList.size()+1;
+    //public static int totalPlayers = playerList.size()+1;
+
+    public ArrayList getPlayerList() {
+        return Game.playerList;
+    }
+    public void setPlayerList(ArrayList<Player> playerList) {
+        this.playerList = playerList;
+    }
 
     //loop game turns
-    static void turn(/*int totalPlayers,*/ int totalTurns) {
+    static void turn(int totalPlayers, int totalTurns) {
         int turn;
         for (turn = 1; turn <= totalTurns; turn++) {
-
             //loop player turns
             Player player;
             for (int i = 0; i < totalPlayers; i++) {
@@ -22,28 +30,42 @@ public class Game {
                 player.removeDeadAnimals();
                 playerAction(player);
                 player.reduceAnimalHealth();
-                Game.checkForLoss(player);
 
+                if (hasLost(player)) {
+                    System.out.println("Player "+player.getName() + "/"+totalPlayers + player.getName() + " has no cash or animals, and is therefore out of the game!");
+                    Dialogs.enterToContinue();
+                }
+                //Game.checkForLoss(player);
 
             }
+            playerList.removeIf(x -> ((hasLost(x))));
+            totalPlayers = playerList.size();
+
         }
 
     }
-    public static void checkForLoss(Player player) {
-        //Game.playerList.forEach(Player -> {
+
+    static boolean hasLost(Player player) {
+        return (player.getCash() == 0 && player.animalInv.size() == 0);
+    }
+  /*
+    static void checkForLoss(Player player) {
+        ArrayList<Player> toRemoveList = playerList;
+         //Game.playerList.forEach(Player -> {
         int cash = player.getCash();
         int animals = player.animalInv.size();
-        if (cash <= 0 && animals == 0) {
+        if ((cash == 0 && animals == 0)) {
+            toRemoveList.remove(player);
             System.out.println("Player " + player.getName() + " has no cash or animals, and is therefore out of the game!");
             Dialogs.enterToContinue();
-            Game.playerList.removeIf(x -> ((player.getCash() ==0) && player.animalInv.size() ==0));
-            System.out.println(playerList);
+            //Game.playerList.removeIf(x -> ((x.getCash() ==0) && x.animalInv.size() ==0));
+            //System.out.println(playerList);
 
         }
         //});
-
-
+        //Game.setPlayerList(toRemoveList);
     }
+*/
     static public void playerAction(Player player) {
         while (!Game.actionsTaken){
             player.showStats();
@@ -52,20 +74,17 @@ public class Game {
                 , 1, 3);
 
             switch (input) {
-                case 1 -> {Store.storeFront(player);
-                            break;
-                            }
-            case 2 -> System.out.println("2"); //feedAnimals();
-            case 3 -> {mateAnimals(player);
-                        break;
-                        }
-        }
+                case 1 -> {Store.storeFront(player); break;}
+                case 2 -> System.out.println("2"); //feedAnimals();
+                case 3 -> {mateAnimals(player); break; }
+            }
         }
     }
 
     static void newGame() {
         int players;
         int totalTurns;
+        int totalPlayers;
         //welcome
         Dialogs.clear();
         System.out.println("      Welcome to: \n \u001B[1mEXTINCT ANIMAL TRADER\033[0;0m \n ----------------------\n");
@@ -80,7 +99,7 @@ public class Game {
 
         //select number of game turns
         totalTurns = Dialogs.promptInt("Select Game duration? (5-30 turns):", 5, 30);
-        Game.turn(/*totalPlayers,*/ totalTurns);
+        Game.turn(totalPlayers, totalTurns);
     }
 
     static void mateAnimals(Player player) {
@@ -119,6 +138,10 @@ public class Game {
         }
         if (gender1 == gender2) {
             System.out.println("Only male + female can mate!");
+            Dialogs.enterToContinue();
+        }
+        if (!(animalType1 == animalType2)) {
+            System.out.println("Only animals of the same species can mate");
             Dialogs.enterToContinue();
         }
 
