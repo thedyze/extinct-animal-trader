@@ -92,7 +92,7 @@ public class Store {
         for (Object obj : temp) {
             if (obj.getClass().equals(newFood.getClass())) {
                 //newFood.setQuantity(newFood.getQuantity()+kilos);
-                temp.set(newFood.getQuantity()+kilos);
+                newFood.setQuantity(newFood.getQuantity()+kilos);
                 player.setCash(player.getCash() - (price * kilos));
                 Game.actionsTaken = true;
 
