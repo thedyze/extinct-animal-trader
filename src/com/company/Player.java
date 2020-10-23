@@ -18,7 +18,7 @@ public class Player {
         //foodInv = new HashMap<>();
         this.name = name;
         //this.pNumber = pNumber;
-        cash = 10000;
+        cash = 250;
     }
     public ArrayList getAnimalInv() {
         return this.animalInv;

@@ -3,11 +3,12 @@ import java.util.ArrayList;
 
 
 public class Game {
-    public static ArrayList<Player> players = new ArrayList<>();
+    public static ArrayList<Player> playerList = new ArrayList<>();
     public static boolean actionsTaken;
+    public static int totalPlayers= playerList.size()+1;
 
     //loop game turns
-    static void turn(int totalPlayers, int totalTurns) {
+    static void turn(/*int totalPlayers,*/ int totalTurns) {
         int turn;
         for (turn = 1; turn <= totalTurns; turn++) {
 
@@ -16,17 +17,33 @@ public class Game {
             for (int i = 0; i < totalPlayers; i++) {
                 Dialogs.clear();
                 actionsTaken = false;
-                player = players.get(i);
+                player = playerList.get(i);
                 System.out.println("Game turn: \u001B[1m" + turn + "/" + totalTurns +"\033[0;0m");
                 player.removeDeadAnimals();
                 playerAction(player);
                 player.reduceAnimalHealth();
+                Game.checkForLoss(player);
+
 
             }
         }
 
     }
+    public static void checkForLoss(Player player) {
+        //Game.playerList.forEach(Player -> {
+        int cash = player.getCash();
+        int animals = player.animalInv.size();
+        if (cash <= 0 && animals == 0) {
+            System.out.println("Player " + player.getName() + " has no cash or animals, and is therefore out of the game!");
+            Dialogs.enterToContinue();
+            Game.playerList.removeIf(x -> ((player.getCash() ==0) && player.animalInv.size() ==0));
+            System.out.println(playerList);
 
+        }
+        //});
+
+
+    }
     static public void playerAction(Player player) {
         while (!Game.actionsTaken){
             player.showStats();
@@ -53,17 +70,17 @@ public class Game {
         Dialogs.clear();
         System.out.println("      Welcome to: \n \u001B[1mEXTINCT ANIMAL TRADER\033[0;0m \n ----------------------\n");
         Dialogs.promptInt("Press 1 for new game:", 1, 1);
-        players = Dialogs.promptInt("How many players? (1-4)", 1, 4);
+        totalPlayers = Dialogs.promptInt("How many players? (1-4)", 1, 4);
 
         //add players
-        for (int i = 0; i < players; i++) {
+        for (int i = 0; i < totalPlayers; i++) {
             Player player = new Player(Dialogs.prompt("Player " + (i + 1) + " name?"));
-            Game.players.add(player);
+            Game.playerList.add(player);
         }
 
         //select number of game turns
         totalTurns = Dialogs.promptInt("Select Game duration? (5-30 turns):", 5, 30);
-        Game.turn(players, totalTurns);
+        Game.turn(/*totalPlayers,*/ totalTurns);
     }
 
     static void mateAnimals(Player player) {
@@ -108,5 +125,22 @@ public class Game {
     }
 
 
+
+    /*
+    static void checkForLoss(Player player) {
+        int cash = player.getCash();
+        int animals = player.animalInv.size();
+        int dead = 0;
+        if (cash <= 0 && animals == 0) {
+            System.out.println("Player " + player.getName() + " has no cash or animals, and is therefore out of the game!");
+            dead= 1;
+            //players.remove(player);
+        }
+        //players.removeIf(Player -> (cash <= 0) && (Player.animalInv.size()));
+        //animalInv.removeIf(Animal -> (Animal.getHealth() <= 0));
+        players.removeIf(Player -> ((player.getCash() ==0) && player.animalInv.size() ==0));
+    }
+
+    */
 }
 

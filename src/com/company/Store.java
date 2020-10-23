@@ -32,7 +32,8 @@ public class Store {
         int animalToSell = Dialogs.promptInt("Number of the animal you want to sell:",
                 1,player.animalInv.size()+1);
         int sellPrice = player.animalInv.get(animalToSell-1).getBuyPrice();
-        player.setCash(player.getCash() + sellPrice);
+        //player.setCash(player.getCash() + sellPrice);
+        player.setCash(0);
         System.out.println(sellPrice);
         player.animalInv.remove(animalToSell-1);
         Game.actionsTaken = true;
