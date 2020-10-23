@@ -2,10 +2,10 @@ package com.company.AnimalSubClasses;
 import com.company.Animal;
 
 
-public class FlyingFox extends Animal {
+public class Dodo extends Animal {
     protected int buyPrice = 250;
 
-    public FlyingFox(String name, String gender) {
+    public Dodo(String name, String gender) {
         super(name, gender);
 
     }

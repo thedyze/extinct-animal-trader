@@ -8,8 +8,9 @@ public class Mammoth extends Animal {
     public Mammoth(String name, String gender) {
         super(name, gender);
     }
-    public int getBuyPrice(){
-        this.buyPrice = buyPrice;
+    public double getSellPrice(){
+        double healthModifier = (getHealth() *0.01);
+        this.buyPrice = (int) (buyPrice * healthModifier);
         return this.buyPrice;
     }
     public void eat() {

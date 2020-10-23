@@ -21,5 +21,5 @@ public abstract class Animal {
     public String getName() {
         return this.name;
     }
-    public abstract int getBuyPrice();
+    public abstract double getSellPrice();
 }
