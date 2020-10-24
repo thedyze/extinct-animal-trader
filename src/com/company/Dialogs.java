@@ -29,33 +29,8 @@ public class Dialogs {
     }
     static public void enterToContinue()
     {
-        System.out.println("Press Enter key to continue...");
-        //Scanner s = new Scanner(System.in);
+        System.out.println("Press [Enter] to continue..");
         scanner.nextLine();
     }
-    /*
-    static public int menu(String menuName, String ...options){
-        // print the menu
-        clear();
-        System.out.println("-".repeat(50));
-        System.out.println("MY GAME NAME: " + menuName);
-        System.out.println("-".repeat(50));
-        var counter = 1;
-        for(var option : options){
-            System.out.println(counter + ". " + option);
-            counter++;
-        }
-        System.out.println("-".repeat(50));
-        // wait for the user to make a choice
-        var choice = 0;
-        try {
-            choice = Integer.parseInt(scanner.nextLine());
-        }
-        catch(Exception ignore){}
-        // if illegal choice show the menu again (recursion)
-        // otherwise return the choice
-        return choice < 1 || choice > options.length ?
-                menu(menuName, options) : choice;
-    }
-*/
+
 }

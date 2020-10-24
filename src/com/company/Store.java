@@ -19,7 +19,7 @@ public class Store {
                 case 1 -> buyAnimals(player); //break;
                 case 2 -> sellAnimal(player); //break;
                 case 3 -> buyFood(player); //break;
-                case 4 -> {inStore = false; break;}
+                case 4 -> inStore = false; //break;}
             }
         }
     }
@@ -36,12 +36,14 @@ public class Store {
             Dialogs.clear();
             player.showStats();
             //select what to buy
-            int input = Dialogs.promptInt("Buy animals: [1.Mammoth 250€] [2.Flying Fox 150€] " +
-                    "[3.Dodo 150€] [6.Done]", 1, 6);
+            int input = Dialogs.promptInt("Buy animals: \n1.Mammoth 250€ \n2.Flying Fox 150€ " +
+                    "\n3.Dodo 150€ \n4.Giant Rat 100€\n4.Elephant Bird 175€\n6.DONE", 1, 6);
             switch (input) {
-                case 1 -> {  if (checkCash(player, input)) {animalType = "Mammoth"; price = 250;} else continue;}
-                case 2 -> {  if (checkCash(player, input)) {animalType = "FlyingFox"; price = 150;} else continue;}
-                case 3 -> {  if (checkCash(player, input)) {animalType = "Dodo"; price = 300;} else continue;}
+                case 1 -> {  price = 250; if (checkCash(player, price)) {animalType = "Mammoth"; } else continue;}
+                case 2 -> {  price = 150; if (checkCash(player, price)) {animalType = "FlyingFox";} else continue;}
+                case 3 -> {  price = 120; if (checkCash(player, price)) {animalType = "Dodo";} else continue;}
+                case 4 -> {  price = 100; if (checkCash(player, price)) {animalType = "GiantRat"; } else continue;}
+                case 5 -> {  price = 175; if (checkCash(player, price)) {animalType = "ElephantBird"; } else continue;}
                 case 6 -> { buying = false;}
             }
             //select gender, name
@@ -64,6 +66,8 @@ public class Store {
             case "Mammoth" -> newAnimal = new Mammoth(name, gender);
             case "FlyingFox" -> newAnimal = new FlyingFox(name, gender);
             case "Dodo" -> newAnimal = new Dodo(name, gender);
+            case "GiantRat" -> newAnimal = new GiantRat(name, gender);
+            case "ElephantBird" -> newAnimal = new ElephantBird(name, gender);
         }
         ArrayList<Animal> temp = player.getAnimalInv();
         temp.add(newAnimal);
@@ -107,20 +111,19 @@ public class Store {
             player.showCashNFood();
 
             //select what to buy
-            int input = Dialogs.promptInt("    Food selection:\n<=====================>\n1.Cheezeburgers: 10€/kg" +
-                    " \n2.Lollipops: 10€/kg\n3.Food3 10€/kg\n4.Food4 10€/kg\n5.Food5 10€/kg\n6.DONE" +
-                    " \n<=====================>", 1, 6);
+            int input = Dialogs.promptInt("    Food selection:           " +
+                    "Can eat:\n<======================><------------------->\n1.Cheezeburgers: 15€/kg           Mammoths" +
+                    " \n2.Lollipops:      11€/kg Elephant Birds, Flying Foxes\n3.Garbage:        8€/kg  Giant Rats, Dodos\n4.DONE" +
+                    " \n<======================><------------------->", 1, 6);
             switch (input) {
-                case 1 -> {foodType = "Cheezeburgers"; price = 10;}
-                case 2 -> {foodType = "Lollipops"; price = 20;}
-                case 3 -> {foodType = "Cheezeburgers"; price = 10;}
-                case 4 -> {foodType = "Cheezeburgers"; price = 10;}
-                case 5 -> {foodType = "Cheezeburgers"; price = 10;}
-                case 6 -> {buyingFood = false; break; }
+                case 1 -> {foodType = "Cheezeburgers"; price = 15;}
+                case 2 -> {foodType = "Lollipops"; price = 11;}
+                case 3 -> {foodType = "Garbage"; price = 8;}
+                case 4 -> {buyingFood = false; break; }
             }
 
             //select amount to buy
-            if (input<6) {
+            //if (input<4) {
                 //System.out.println("You can afford max " + (player.getCash() / price) + " kgs of " + foodType);
                 var kilos = Dialogs.promptInt("You can afford max \u001B[1m" + (player.getCash() / price) +
                         "\033[0;0m kgs of \u001B[1m" + foodType + "\033[0;0m. \nHow many do you want?" , 1, (player.getCash() / price)) ;
@@ -128,8 +131,9 @@ public class Store {
                 switch (foodType) {
                     case "Cheezeburgers" -> addToFoodInv(player, foodType, kilos, price);
                     case "Lollipops" -> addToFoodInv(player, foodType, kilos, price);
+                    case "Garbage" -> addToFoodInv(player, foodType, kilos, price);
                 }
-            }
+            //}
         }
     }
 
@@ -141,6 +145,7 @@ public class Store {
         switch(foodType) {
             case "Cheezeburgers" -> newFood = new Cheezeburgers(kilos);
             case "Lollipops" -> newFood = new Lollipops(kilos);
+            case "Garbage" -> newFood = new Garbage(kilos);
         }
         //loop and add/update food items
         boolean existingFood = false;
@@ -166,13 +171,16 @@ public class Store {
         }
     }
     //check if player have enough cash
-    public static boolean checkCash(Player player, int input){
+    public static boolean checkCash(Player player/*,int input */, int price){
+        /*
         int price = 0;
         switch (input) {
             case 1 -> price = 250;
             case 2 -> price = 150;
             case 3 -> price = 300;
         }
+
+         */
         if(player.getCash() >= price ) {
             return true;
         }

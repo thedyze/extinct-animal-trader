@@ -70,14 +70,14 @@ public class Player {
 
     public void showCashNFood() {
         System.out.println("Player: \u001B[1m" + this.name +
-                "\033[0;0m, you have: \u001B[1m" + this.cash + "€\033[0;0m.\n    Your food inventory:\n|¨                    ¨|");
+                "\033[0;0m, you have: \u001B[1m" + this.cash + "€\033[0;0m.\n  Your food inventory:\n|¨                       ¨|");
             this.foodInv.forEach(foodItem -> {
                 int index = getFoodInv().indexOf(foodItem);
                 var className = foodItem.getClass().getSimpleName();
                 var amount = foodItem.getQuantity();
                 System.out.println(" " + (index+1) + ": " + className + " (" + amount + " kgs)");
             });
-        System.out.println("|_                    _|\n");
+        System.out.println("|_                       _|\n");
     }
 
     public void reduceAnimalHealth() {

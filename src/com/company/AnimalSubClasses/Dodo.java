@@ -7,6 +7,7 @@ public class Dodo extends Animal {
 
     public Dodo(String name, String gender) {
         super(name, gender);
+        feedsOn = 3;
 
     }
     public double getSellPrice(){

@@ -2,12 +2,12 @@ package com.company.AnimalSubClasses;
 import com.company.Animal;
 
 
-public class Mammoth extends Animal {
-     static protected int buyPrice = 250;
+public class ElephantBird extends Animal {
+    static protected int buyPrice = 250;
 
-    public Mammoth(String name, String gender) {
+    public ElephantBird(String name, String gender) {
         super(name, gender);
-        feedsOn = 1;
+        feedsOn = 2;
     }
     public double getSellPrice(){
         double healthModifier = (getHealth() *0.01);
