@@ -1,6 +1,4 @@
 package com.company;
-import com.company.FoodSubClasses.*;
-import com.company.AnimalSubClasses.*;
 import java.util.*;
 
 
@@ -17,7 +15,7 @@ public class Player {
         this.name = name;
         cash = 500;
     }
-    public ArrayList getAnimalInv() {
+    public ArrayList<Animal> getAnimalInv() {
         return this.animalInv;
     }
 
@@ -25,7 +23,7 @@ public class Player {
         this.animalInv = animalInv;
     }
 
-    public ArrayList getFoodInv() {
+    public ArrayList<Food> getFoodInv() {
         return this.foodInv;
     }
 
@@ -63,7 +61,6 @@ public class Player {
         }
         else if (animalInv.size() == 0){System.out.println("Player: \u001B[1m" + this.name +
                 "\033[0;0m, you have: \u001B[1m" + this.cash + "€\033[0;0m");
-              System.out.println("");
         }
 
 

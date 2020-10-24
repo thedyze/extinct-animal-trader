@@ -3,7 +3,7 @@ import java.util.ArrayList;
 
 public class Game {
     public static ArrayList<Player> playerList = new ArrayList<>();
-    public static ArrayList<Player> toRemoveList;
+    //public static ArrayList<Player> toRemoveList;
     public static boolean actionsTaken;
 
     /*
@@ -35,7 +35,8 @@ public class Game {
                     Dialogs.enterToContinue();
                 }
             }
-            playerList.removeIf(x -> ((hasLost(x))));
+            //playerList.removeIf(x -> ((hasLost(x))));
+            playerList.removeIf(Game::hasLost);
             totalPlayers = playerList.size();
             if (turn==totalTurns) { gameEndCheck(); }
         }
@@ -53,9 +54,9 @@ public class Game {
                 , 1, 3);
 
             switch (input) {
-                case 1 -> {Store.storeFront(player); break;}
-                case 2 -> {feedAnimal(player); break;}
-                case 3 -> {mateAnimals(player); break; }
+                case 1 -> Store.storeFront(player);
+                case 2 -> feedAnimal(player);
+                case 3 -> mateAnimals(player);
             }
         }
     }
@@ -65,7 +66,7 @@ public class Game {
         ArrayList<Food> tempFoodInv = player.getFoodInv();
         player.showStats();
         int animalToFeed = 0;
-        int foodToFeed = 0;
+        int foodToFeed;
         boolean feeding = true;
         while (feeding && !Game.actionsTaken) {
 
@@ -182,7 +183,6 @@ public class Game {
     }
 
     static void newGame() {
-        int players;
         int totalTurns;
         int totalPlayers;
         //welcome
@@ -208,20 +208,22 @@ public class Game {
     }
     //who got the most cash?
     static void gameEndCheck() {
-        Player player = null;
+        Player player;
         System.out.println("GAME FINISHED!\nSelling all remaining animals.");
         Dialogs.enterToContinue();
         int endCash = 0;
         String winner = "";
 
-        for (int i = 0; i < playerList.size(); i++) {
+        //for (int i = 0; i < playerList.size(); i++) {
+        for (Player value : playerList) {
 
-            player = playerList.get(i);
-            for (int a = player.animalInv.size() -1; a>=0; a--) {
+            player = value;
+            for (int a = player.animalInv.size() - 1; a >= 0; a--) {
                 if (player.animalInv.get(a).getHealth() <= 0) {
                     System.out.println(player.animalInv.get(a).getClass().getSimpleName()
                             + player.animalInv.get(a).getName() + "died");
-                    player.animalInv.remove(a);}
+                    player.animalInv.remove(a);
+                }
                 int sellPrice = (int) player.animalInv.get(a).getSellPrice();
                 player.setCash(player.getCash() + sellPrice);
                 player.animalInv.remove(a);
