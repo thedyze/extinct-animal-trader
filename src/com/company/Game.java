@@ -56,7 +56,7 @@ public class Game {
 
     public static void feedAnimal(Player player) {
 
-        ArrayList<Food> tempFood = player.getFoodInv();
+        ArrayList<Food> tempFoodInv = player.getFoodInv();
         player.showStats();
         int animalToFeed = 0;
         int foodToFeed = 0;
@@ -72,28 +72,35 @@ public class Game {
                 Dialogs.enterToContinue();
             }
 
-            if (player.foodInv.size() > 0) {
+            if (tempFoodInv.size() > 0) {
                 player.showCashNFood();
                 foodToFeed = Dialogs.promptInt("Select food to feed animal with:",
-                        1, player.foodInv.size() + 1)-1;
+                        1, tempFoodInv.size() + 1)-1;
 
                 int t = player.animalInv.get(animalToFeed).getFeedsOn();
                 System.out.println(t);
 
                 //right kind of food - add health, subtract food
-                if ((foodToFeed+1) == player.animalInv.get(animalToFeed).getFeedsOn() && (player.foodInv.get(foodToFeed).getQuantity() > 0)) {
+                if ((foodToFeed+1) == player.animalInv.get(animalToFeed).getFeedsOn() && (tempFoodInv.get(foodToFeed).getQuantity() > 0)) {
 
                     player.animalInv.get(animalToFeed).setHealth(-10);
                     System.out.println("Animal health: " + player.animalInv.get(animalToFeed).getHealth());
-                    player.foodInv.get(foodToFeed).setQuantity(player.foodInv.get(foodToFeed).getQuantity()-1);
-                    Game.actionsTaken = true;
-                    Dialogs.enterToContinue();
+                    tempFoodInv.get(foodToFeed).setQuantity(tempFoodInv.get(foodToFeed).getQuantity() - 1);
+
+                    //remove food if quantity = 0
+                    for (Food food : tempFoodInv) {
+                        if (food.setQuantity(food.getQuantity()) == 0) {
+                            tempFoodInv.remove(foodToFeed);
+                        }
+                        Game.actionsTaken = true;
+                        Dialogs.enterToContinue();
+                    }
                 }
                 //wrong type of food
                 else if ((foodToFeed+1) != player.animalInv.get(animalToFeed).getFeedsOn()) {
                     System.out.println(player.animalInv.get(animalToFeed).getClass().getSimpleName() + " "
                             + player.animalInv.get(animalToFeed).getName() + " can't eat "
-                            + player.foodInv.get(foodToFeed).getClass().getSimpleName() + "!");
+                            + tempFoodInv.get(foodToFeed).getClass().getSimpleName() + "!");
                     Dialogs.enterToContinue();
                 }
                 else if (player.foodInv.get(foodToFeed).getQuantity() == 0) {
@@ -104,6 +111,7 @@ public class Game {
                 System.out.println("You have no food");
             }
         }
+            player.setFoodInv(tempFoodInv);
     }
 
     static void newGame() {
