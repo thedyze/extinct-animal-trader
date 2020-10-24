@@ -78,7 +78,7 @@ public class Player {
                 int index = getFoodInv().indexOf(foodItem);
                 var className = foodItem.getClass().getSimpleName();
                 var amount = foodItem.getQuantity();
-                System.out.println(" " + (index+1) + ": " + className + " " + amount + "kgs");
+                System.out.println(" " + (index+1) + ": " + className + " (" + amount + " kgs)");
             });
         System.out.println("|_                    _|\n");
     }

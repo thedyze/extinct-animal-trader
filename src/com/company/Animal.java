@@ -22,5 +22,8 @@ public abstract class Animal {
     public String getName() {
         return this.name;
     }
+    public int getFeedsOn() {
+        return this.feedsOn;
+    }
     public abstract double getSellPrice();
 }

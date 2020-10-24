@@ -5,15 +5,13 @@ public class Game {
     public static ArrayList<Player> playerList = new ArrayList<>();
     public static ArrayList<Player> toRemoveList;
     public static boolean actionsTaken;
-    //public static int totalPlayers = playerList.size()+1;
 
-    public ArrayList getPlayerList() {
-        return Game.playerList;
-    }
+    /*
+    public ArrayList getPlayerList() { return Game.playerList;}
     public void setPlayerList(ArrayList<Player> playerList) {
         this.playerList = playerList;
     }
-
+    */
     //loop game turns
     static void turn(int totalPlayers, int totalTurns) {
         int turn;
@@ -40,34 +38,6 @@ public class Game {
             totalPlayers = playerList.size();
         }
     }
-
-    public static void feedAnimal(Player player) {
-        player.showStats();
-        int animalToFeed = 0;
-        int foodToFeed = 0;
-
-        if (player.animalInv.size() > 0) {
-             animalToFeed = Dialogs.promptInt("Select animal to feed:",
-                    1, player.animalInv.size() + 1);
-            //player.animalInv.getClass().getFields(animalToFeed - 1);
-            //Game.actionsTaken = true;
-            //System.out.println("You fed an animal" + player.getCash() + "€");
-            //Dialogs.enterToContinue();
-        }
-        else {
-            System.out.println("You have no animals to feed.");
-            Dialogs.enterToContinue();
-        }
-        if (player.foodInv.size() > 0) {
-            foodToFeed = Dialogs.promptInt("Select food to feed animal with:",
-                    1, player.foodInv.size() + 1);
-        }
-
-    }
-    //check if player lost
-    static boolean hasLost(Player player) {
-        return (player.getCash() == 0 && player.animalInv.size() == 0);
-    }
     //main loop
     static public void playerAction(Player player) {
         while (!Game.actionsTaken){
@@ -78,8 +48,60 @@ public class Game {
 
             switch (input) {
                 case 1 -> {Store.storeFront(player); break;}
-                case 2 -> System.out.println("2"); //feedAnimals();
+                case 2 -> {feedAnimal(player); break;}
                 case 3 -> {mateAnimals(player); break; }
+            }
+        }
+    }
+
+    public static void feedAnimal(Player player) {
+
+        ArrayList<Food> tempFood = player.getFoodInv();
+        player.showStats();
+        int animalToFeed = 0;
+        int foodToFeed = 0;
+        boolean feeding = true;
+        while (feeding && !Game.actionsTaken) {
+
+            if (player.animalInv.size() > 0) {
+                animalToFeed = Dialogs.promptInt("Select animal to feed:",
+                        1, player.animalInv.size() + 1) - 1;
+            }
+            else {
+                System.out.println("You have no animals to feed.");
+                Dialogs.enterToContinue();
+            }
+
+            if (player.foodInv.size() > 0) {
+                player.showCashNFood();
+                foodToFeed = Dialogs.promptInt("Select food to feed animal with:",
+                        1, player.foodInv.size() + 1)-1;
+
+                int t = player.animalInv.get(animalToFeed).getFeedsOn();
+                System.out.println(t);
+
+                //right kind of food - add health, subtract food
+                if ((foodToFeed+1) == player.animalInv.get(animalToFeed).getFeedsOn() && (player.foodInv.get(foodToFeed).getQuantity() > 0)) {
+
+                    player.animalInv.get(animalToFeed).setHealth(-10);
+                    System.out.println("Animal health: " + player.animalInv.get(animalToFeed).getHealth());
+                    player.foodInv.get(foodToFeed).setQuantity(player.foodInv.get(foodToFeed).getQuantity()-1);
+                    Game.actionsTaken = true;
+                    Dialogs.enterToContinue();
+                }
+                //wrong type of food
+                else if ((foodToFeed+1) != player.animalInv.get(animalToFeed).getFeedsOn()) {
+                    System.out.println(player.animalInv.get(animalToFeed).getClass().getSimpleName() + " "
+                            + player.animalInv.get(animalToFeed).getName() + " can't eat "
+                            + player.foodInv.get(foodToFeed).getClass().getSimpleName() + "!");
+                    Dialogs.enterToContinue();
+                }
+                else if (player.foodInv.get(foodToFeed).getQuantity() == 0) {
+                    System.out.println("You have no food");
+                }
+            }
+            else if (player.foodInv.size() == 0) {
+                System.out.println("You have no food");
             }
         }
     }
@@ -149,41 +171,9 @@ public class Game {
         }
 
     }
-
-  /*
-    static void checkForLoss(Player player) {
-        ArrayList<Player> toRemoveList = playerList;
-         //Game.playerList.forEach(Player -> {
-        int cash = player.getCash();
-        int animals = player.animalInv.size();
-        if ((cash == 0 && animals == 0)) {
-            toRemoveList.remove(player);
-            System.out.println("Player " + player.getName() + " has no cash or animals, and is therefore out of the game!");
-            Dialogs.enterToContinue();
-            //Game.playerList.removeIf(x -> ((x.getCash() ==0) && x.animalInv.size() ==0));
-            //System.out.println(playerList);
-
-        }
-        //});
-        //Game.setPlayerList(toRemoveList);
+    //check if player lost
+    static boolean hasLost(Player player) {
+        return (player.getCash() == 0 && player.animalInv.size() == 0);
     }
-*/
-
-    /*
-    static void checkForLoss(Player player) {
-        int cash = player.getCash();
-        int animals = player.animalInv.size();
-        int dead = 0;
-        if (cash <= 0 && animals == 0) {
-            System.out.println("Player " + player.getName() + " has no cash or animals, and is therefore out of the game!");
-            dead= 1;
-            //players.remove(player);
-        }
-        //players.removeIf(Player -> (cash <= 0) && (Player.animalInv.size()));
-        //animalInv.removeIf(Animal -> (Animal.getHealth() <= 0));
-        players.removeIf(Player -> ((player.getCash() ==0) && player.animalInv.size() ==0));
-    }
-
-    */
 }
 

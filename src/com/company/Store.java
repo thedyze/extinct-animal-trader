@@ -6,7 +6,7 @@ import java.util.*;
 public class Store {
 
     public static void storeFront(Player player) {
-        var inStore = true;
+        boolean inStore = true;
         //don't exit until player has made his actions
         while (inStore && !Game.actionsTaken) {
             Dialogs.clear();
@@ -21,24 +21,6 @@ public class Store {
                 case 3 -> buyFood(player); //break;
                 case 4 -> {inStore = false; break;}
             }
-        }
-    }
-
-    //check if player have enough cash
-    public static boolean checkCash(Player player, int input){
-        int price = 0;
-        switch (input) {
-            case 1 -> price = 250;
-            case 2 -> price = 150;
-            case 3 -> price = 300;
-        }
-        if(player.getCash() >= price ) {
-            return true;
-        }
-        else {
-            System.out.println("Not enough cash");
-            Dialogs.enterToContinue();
-            return false;
         }
     }
 
@@ -126,7 +108,7 @@ public class Store {
 
             //select what to buy
             int input = Dialogs.promptInt("    Food selection:\n<=====================>\n1.Cheezeburgers: 10€/kg" +
-                    " \n2.Lollipops: 10€/kg\n3.Food3 10€/kg\n4.Food4 10€/kg\n5.Food5 10€/kg\n6.Back to Storefront" +
+                    " \n2.Lollipops: 10€/kg\n3.Food3 10€/kg\n4.Food4 10€/kg\n5.Food5 10€/kg\n6.DONE" +
                     " \n<=====================>", 1, 6);
             switch (input) {
                 case 1 -> {foodType = "Cheezeburgers"; price = 10;}
@@ -171,7 +153,7 @@ public class Store {
                 existingFood = true;
             }
         }
-
+        //update player foodInv & cash
         if (!existingFood){
             temp.add(newFood);
             player.setFoodInv(temp);
@@ -183,48 +165,21 @@ public class Store {
             player.setFoodInv(temp);
         }
     }
-/*
-    static void addToFoodInv (Player player, Food foodType, int kilos, int price) {
-        HashMap<Food, Integer> tmpFoodInv = player.getFoodInv();
-        //switch (foodType) {
-        //case "Cheezeburgers" ->
-
-        //}
-        if (tmpFoodInv.containsKey(foodType.getClass().getSimpleName())) {
-        //tmpFoodInv.forEach((key, value) ->
-        //if (val != null) {
-            int tmp = tmpFoodInv.get(foodType);
-            //int tmp = ((int) tempFood.get(foodType));
-            System.out.println("temp" + tmp);
-            //tempFood.computeIfPresent(foodType, (k, v) -> (v + kilos));
-            tmpFoodInv.merge(foodType,tmp, (oldValue, newValue) -> tmp + kilos);
-
-            //tempFood.put(new Cheezeburgers().getClass().getSimpleName(), tmp+kilos);
-            //tempFood.put(foodType, tmp+kilos);
-            player.setFoodInv(tmpFoodInv);
+    //check if player have enough cash
+    public static boolean checkCash(Player player, int input){
+        int price = 0;
+        switch (input) {
+            case 1 -> price = 250;
+            case 2 -> price = 150;
+            case 3 -> price = 300;
         }
-        else if (!tmpFoodInv.containsKey(foodType)){
-            //Cheezeburgers cheezeburgers = new Cheezeburgers();
-            //System.out.println("test");
-            tmpFoodInv.put(foodType, kilos);
-            player.setFoodInv(tmpFoodInv);
-
+        if(player.getCash() >= price ) {
+            return true;
         }
-        player.setCash(player.getCash() - (price * kilos));
-        Game.actionsTaken = true;
-    }
-
-  /*
-    //amount to buy
-    public static void buyKilos(Player player, String foodType, int price) {
-
-        System.out.println("You can afford max " + (player.getCash() / price) + " kgs of " + foodType);
-        var kilos = Dialogs.promptInt("How many do you want?",1, (player.getCash() / price));
-        switch (foodType) {
-            case "Cheezeburgers" -> buyCheezeburgers(player, foodType, kilos, price);
-            case "Lollipops" -> buyLollipops(player, foodType, kilos, price);
+        else {
+            System.out.println("Not enough cash");
+            Dialogs.enterToContinue();
+            return false;
         }
     }
-
-   */
 }
