@@ -100,26 +100,6 @@ public class Player {
         animalInv.removeIf(x -> (x.getHealth() <= 0));
         //}
     }
-        /*
-        animalInv.forEach(Animal -> {
-            if (Animal.getHealth() <= 0) {
-                System.out.println(Animal.getClass().getSimpleName() + Animal.getName() + "is dead :(");
-                animalInv.removeIf(n -> (n.getHealth() <=0));
-            }
-        });
 
 
-    }
-
-    public HashMap<Food, Integer> getFoodInv() {
-        return this.foodInv;
-    }
-
-    public void setFoodInv(HashMap<Food,Integer> foodInv) {
-        this.foodInv = foodInv;
-        //return this.foodInv;
-    }
-
-
-    */
 }

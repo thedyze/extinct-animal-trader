@@ -3,6 +3,7 @@ package com.company;
 public abstract class Animal {
 
     protected int health = 100;
+    protected int feedsOn;
     protected String gender;
     protected String name;
 

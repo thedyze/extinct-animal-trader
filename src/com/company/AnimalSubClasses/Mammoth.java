@@ -4,6 +4,7 @@ import com.company.Animal;
 
 public class Mammoth extends Animal {
      static protected int buyPrice = 250;
+     static protected int feedsOn = 1;
 
     public Mammoth(String name, String gender) {
         super(name, gender);
@@ -13,7 +14,8 @@ public class Mammoth extends Animal {
         this.buyPrice = (int) (buyPrice * healthModifier);
         return this.buyPrice;
     }
-    public void eat() {
-        System.out.println("");
+    public int getFeedsOn() {
+        return this.feedsOn;
+
     }
 }

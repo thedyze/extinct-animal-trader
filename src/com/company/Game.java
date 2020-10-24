@@ -40,11 +40,35 @@ public class Game {
             totalPlayers = playerList.size();
         }
     }
+
+    public static void feedAnimal(Player player) {
+        player.showStats();
+        int animalToFeed = 0;
+        int foodToFeed = 0;
+
+        if (player.animalInv.size() > 0) {
+             animalToFeed = Dialogs.promptInt("Select animal to feed:",
+                    1, player.animalInv.size() + 1);
+            //player.animalInv.getClass().getFields(animalToFeed - 1);
+            //Game.actionsTaken = true;
+            //System.out.println("You fed an animal" + player.getCash() + "€");
+            //Dialogs.enterToContinue();
+        }
+        else {
+            System.out.println("You have no animals to feed.");
+            Dialogs.enterToContinue();
+        }
+        if (player.foodInv.size() > 0) {
+            foodToFeed = Dialogs.promptInt("Select food to feed animal with:",
+                    1, player.foodInv.size() + 1);
+        }
+
+    }
     //check if player lost
     static boolean hasLost(Player player) {
         return (player.getCash() == 0 && player.animalInv.size() == 0);
     }
-
+    //main loop
     static public void playerAction(Player player) {
         while (!Game.actionsTaken){
             player.showStats();

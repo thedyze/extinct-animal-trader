@@ -114,6 +114,7 @@ public class Store {
         }
 
     }
+
     static void buyFood(Player player) {
         var buyingFood = true;
         var foodType = "";
