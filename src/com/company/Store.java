@@ -12,9 +12,10 @@ public class Store {
             Dialogs.clear();
             //store menu
             player.showStats();
-            System.out.println("Welcome to the Extinct Animals store! Please make a selection:");
-            var input = Dialogs.promptInt("[1.Buy Animals] [2.Sell Animals] [3.Buy Food] " +
-                    "[4.Exit Store]", 1, 4);
+            System.out.println("Welcome to the \u001B[1mExtinct Animals store!\033[0;0m \n\n    Select:\n" +
+                    "<==============>");
+            var input = Dialogs.promptInt(" 1.Buy Animals \n 2.Sell Animals \n 3.Buy Food " +
+                    "\n 4.Exit Store\n<==============>", 1, 4);
             switch (input) {
                 case 1 -> buyAnimals(player); //break;
                 case 2 -> sellAnimal(player); //break;
@@ -36,8 +37,9 @@ public class Store {
             Dialogs.clear();
             player.showStats();
             //select what to buy
-            int input = Dialogs.promptInt("\u001B[1mBuy animals:\033[0;0m \n1.Mammoth 250€ \n2.Flying Fox 150€ " +
-                    "\n3.Dodo 125€ \n4.Giant Rat 100€\n4.Elephant Bird 175€\n6.DONE", 1, 6);
+            int input = Dialogs.promptInt("\n\u001B[1m   Animal Selection:\033[0;0m\n<======================>" +
+                    " \n1.Mammoth 250€ \n2.Flying Fox 150€ \n3.Dodo 125€ \n4.Giant Rat 100€\n4.Elephant Bird 175€" +
+                    "\n<======================>\n6.DONE", 1, 6);
             switch (input) {
                 case 1 -> {  price = 250; if (checkCash(player, price)) {animalType = "Mammoth"; } else continue;}
                 case 2 -> {  price = 150; if (checkCash(player, price)) {animalType = "FlyingFox";} else continue;}

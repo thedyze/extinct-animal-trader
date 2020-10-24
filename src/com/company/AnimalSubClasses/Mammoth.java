@@ -9,10 +9,10 @@ public class Mammoth extends Animal {
         super(name, gender);
         feedsOn = 1;
     }
+
     public double getSellPrice(){
         double healthModifier = (getHealth() *0.01);
-        this.buyPrice = (int) (buyPrice * healthModifier);
-        return this.buyPrice;
+        buyPrice = (int) (buyPrice * healthModifier);
+        return buyPrice;
     }
-
 }

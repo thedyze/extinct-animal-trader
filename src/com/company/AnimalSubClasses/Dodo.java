@@ -10,12 +10,10 @@ public class Dodo extends Animal {
         feedsOn = 3;
 
     }
+
     public double getSellPrice(){
         double healthModifier = (getHealth() *0.01);
-        this.buyPrice = (int) (buyPrice * healthModifier);
-        return this.buyPrice;
-    }
-    public void eat() {
-        System.out.println("");
+        buyPrice = (int) (buyPrice * healthModifier);
+        return buyPrice;
     }
 }

@@ -15,7 +15,5 @@ public class GiantRat extends Animal {
         this.buyPrice = (int) (buyPrice * healthModifier);
         return this.buyPrice;
     }
-    public void eat() {
-        System.out.println("");
-    }
+
 }
