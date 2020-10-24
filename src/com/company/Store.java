@@ -44,7 +44,7 @@ public class Store {
         }
     }
 
-    public static void buyFood(Player player) {
+    static void buyFood(Player player) {
         var buyingFood = true;
         var foodType = "";
         var price = 0;
@@ -52,10 +52,11 @@ public class Store {
         while (buyingFood) {
             Dialogs.clear();
             player.showCashNFood();
-            //select what to buy
-            int input = Dialogs.promptInt("Store stock: [1:Cheezeburgers 10€/kg] [2:Lollipops 10€/kg]" +
-                    " [3:Food3 10€/kg] [4:Food4 10€/kg] [5:Food5 10€/kg] [6:Done]", 1, 6);
 
+            //select what to buy
+            int input = Dialogs.promptInt("Store stock:\n#---------------------#\n1.Cheezeburgers 10€/kg" +
+                    " \n2.Lollipops 10€/kg\n3.Food3 10€/kg\n4.Food4 10€/kg\n5.Food5 10€/kg\n6.Done" +
+                    " \n#---------------------#", 1, 6);
             switch (input) {
                 case 1 -> {foodType = "Cheezeburgers"; price = 10;}
                 case 2 -> {foodType = "Lollipops"; price = 20;}
@@ -67,8 +68,10 @@ public class Store {
 
             //select amount to buy
             if (input<6) {
-                System.out.println("You can afford max " + (player.getCash() / price) + " kgs of " + foodType);
-                var kilos = Dialogs.promptInt("How many do you want?", 1, (player.getCash() / price));
+                //System.out.println("You can afford max " + (player.getCash() / price) + " kgs of " + foodType);
+                var kilos = Dialogs.promptInt("You can afford max \u001B[1m" + (player.getCash() / price) +
+                        "\033[0;0m kgs of \u001B[1m" + foodType + "\033[0;0m. \nHow many do you want?" , 1, (player.getCash() / price)) ;
+
                 switch (foodType) {
                     case "Cheezeburgers" -> addToFoodInv(player, foodType, kilos, price);
                     case "Lollipops" -> addToFoodInv(player, foodType, kilos, price);
@@ -86,13 +89,13 @@ public class Store {
             case "Cheezeburgers" -> newFood = new Cheezeburgers(kilos);
             case "Lollipops" -> newFood = new Lollipops(kilos);
         }
-
+        //loop and add/update food items
         boolean existingFood = false;
-
         for (Food food : temp) {
-            if (food.getClass().equals(newFood.getClass())) {
-                food.setQuantity(food.getQuantity()+kilos);
-                player.setCash(player.getCash() - (price * kilos));
+            if (food.getClass().equals(newFood.getClass()))
+            {
+                food.setQuantity(food.getQuantity() + kilos);
+                player.setCash(player.getCash() - ( price * kilos ));
                 Game.actionsTaken = true;
                 existingFood = true;
             }
