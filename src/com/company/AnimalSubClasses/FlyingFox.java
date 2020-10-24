@@ -3,10 +3,11 @@ import com.company.Animal;
 
 
 public class FlyingFox extends Animal {
-    protected int buyPrice = 250;
+    protected int buyPrice = 150;
 
     public FlyingFox(String name, String gender) {
         super(name, gender);
+        feedsOn = 2;
 
     }
     public double getSellPrice(){

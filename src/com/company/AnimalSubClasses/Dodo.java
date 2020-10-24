@@ -3,7 +3,7 @@ import com.company.Animal;
 
 
 public class Dodo extends Animal {
-    protected int buyPrice = 250;
+    protected int buyPrice = 300;
 
     public Dodo(String name, String gender) {
         super(name, gender);

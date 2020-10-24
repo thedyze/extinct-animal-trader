@@ -8,17 +8,14 @@ public class Player {
 
     protected ArrayList<Animal> animalInv;
     protected ArrayList<Food> foodInv;
-    //private HashMap <Food, Integer> foodInv;
     private final String name;
     private int cash;
 
     public Player(String name) {
         animalInv = new ArrayList<>();
         foodInv = new ArrayList<>();
-        //foodInv = new HashMap<>();
         this.name = name;
-        //this.pNumber = pNumber;
-        cash = 300;
+        cash = 500;
     }
     public ArrayList getAnimalInv() {
         return this.animalInv;
@@ -73,7 +70,7 @@ public class Player {
 
     public void showCashNFood() {
         System.out.println("Player: \u001B[1m" + this.name +
-                "\033[0;0m, you have: \u001B[1m" + this.cash + "€\033[0;0m. Your food inventory:\n|¨                    ¨|");
+                "\033[0;0m, you have: \u001B[1m" + this.cash + "€\033[0;0m.\n    Your food inventory:\n|¨                    ¨|");
             this.foodInv.forEach(foodItem -> {
                 int index = getFoodInv().indexOf(foodItem);
                 var className = foodItem.getClass().getSimpleName();
