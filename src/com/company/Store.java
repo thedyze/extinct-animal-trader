@@ -54,9 +54,9 @@ public class Store {
             player.showCashNFood();
 
             //select what to buy
-            int input = Dialogs.promptInt("Store stock:\n#---------------------#\n1.Cheezeburgers 10€/kg" +
-                    " \n2.Lollipops 10€/kg\n3.Food3 10€/kg\n4.Food4 10€/kg\n5.Food5 10€/kg\n6.Done" +
-                    " \n#---------------------#", 1, 6);
+            int input = Dialogs.promptInt("    Food selection:\n<=====================>\n1.Cheezeburgers: 10€/kg" +
+                    " \n2.Lollipops: 10€/kg\n3.Food3 10€/kg\n4.Food4 10€/kg\n5.Food5 10€/kg\n6.Back to Storefront" +
+                    " \n<=====================>", 1, 6);
             switch (input) {
                 case 1 -> {foodType = "Cheezeburgers"; price = 10;}
                 case 2 -> {foodType = "Lollipops"; price = 20;}
