@@ -1,7 +1,5 @@
 package com.company;
 import java.util.ArrayList;
-import com.company.FoodSubClasses.*;
-import com.company.AnimalSubClasses.*;
 
 public class Game {
     public static ArrayList<Player> playerList = new ArrayList<>();
@@ -31,41 +29,22 @@ public class Game {
                 playerAction(player);
                 player.reduceAnimalHealth();
 
+                //remove players that lost
                 if (hasLost(player)) {
-                    System.out.println("Player "+player.getName() + "/"+totalPlayers + player.getName() + " has no cash or animals, and is therefore out of the game!");
+                    System.out.println("Player "+player.getName() + "/"+totalPlayers + player.getName() +
+                            " has no cash or animals, and is therefore out of the game!");
                     Dialogs.enterToContinue();
                 }
-                //Game.checkForLoss(player);
-
             }
             playerList.removeIf(x -> ((hasLost(x))));
             totalPlayers = playerList.size();
-
         }
-
     }
-
+    //check if player lost
     static boolean hasLost(Player player) {
         return (player.getCash() == 0 && player.animalInv.size() == 0);
     }
-  /*
-    static void checkForLoss(Player player) {
-        ArrayList<Player> toRemoveList = playerList;
-         //Game.playerList.forEach(Player -> {
-        int cash = player.getCash();
-        int animals = player.animalInv.size();
-        if ((cash == 0 && animals == 0)) {
-            toRemoveList.remove(player);
-            System.out.println("Player " + player.getName() + " has no cash or animals, and is therefore out of the game!");
-            Dialogs.enterToContinue();
-            //Game.playerList.removeIf(x -> ((x.getCash() ==0) && x.animalInv.size() ==0));
-            //System.out.println(playerList);
 
-        }
-        //});
-        //Game.setPlayerList(toRemoveList);
-    }
-*/
     static public void playerAction(Player player) {
         while (!Game.actionsTaken){
             player.showStats();
@@ -122,7 +101,7 @@ public class Game {
                 if (rand2) {gender = "male";}
                 else {gender = "female";}
                 String name = Dialogs.prompt("Success!! It's a " + gender + "! Choose baby animal name:");
-                Store.buyAnimal(player, 0, name, gender, "Mammoth");
+                Store.addNewAnimal(player, 0, name, gender, "Mammoth");
                 Game.actionsTaken = true;
             }
             else {
@@ -147,7 +126,24 @@ public class Game {
 
     }
 
+  /*
+    static void checkForLoss(Player player) {
+        ArrayList<Player> toRemoveList = playerList;
+         //Game.playerList.forEach(Player -> {
+        int cash = player.getCash();
+        int animals = player.animalInv.size();
+        if ((cash == 0 && animals == 0)) {
+            toRemoveList.remove(player);
+            System.out.println("Player " + player.getName() + " has no cash or animals, and is therefore out of the game!");
+            Dialogs.enterToContinue();
+            //Game.playerList.removeIf(x -> ((x.getCash() ==0) && x.animalInv.size() ==0));
+            //System.out.println(playerList);
 
+        }
+        //});
+        //Game.setPlayerList(toRemoveList);
+    }
+*/
 
     /*
     static void checkForLoss(Player player) {

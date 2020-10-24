@@ -1,6 +1,4 @@
 package com.company;
-//import com.company.FoodSubClasses.Cheezeburgers;
-//import com.company.FoodSubClasses.Lollipops;
 import com.company.FoodSubClasses.*;
 import com.company.AnimalSubClasses.*;
 import java.util.*;
@@ -44,6 +42,78 @@ public class Store {
         }
     }
 
+    //buy animals
+    public static void buyAnimals(Player player) {
+        var buying = true;
+        //select food
+        while (buying) {
+
+            int price = 0;
+            String animalType = "";
+            String gender = "";
+            Dialogs.clear();
+            player.showStats();
+            //select what to buy
+            int input = Dialogs.promptInt("Buy animals: [1.Mammoth 250€] [2.Flying Fox 150€] " +
+                    "[3.Dodo 150€] [6.Done]", 1, 6);
+            switch (input) {
+                case 1 -> {  if (checkCash(player, input)) {animalType = "Mammoth"; price = 250;} else continue;}
+                case 2 -> {  if (checkCash(player, input)) {animalType = "FlyingFox"; price = 150;} else continue;}
+                case 3 -> {  if (checkCash(player, input)) {animalType = "Dodo"; price = 300;} else continue;}
+                case 6 -> { buying = false;}
+            }
+            //select gender, name
+            if (buying) {
+                int tmpGender = Dialogs.promptInt("Which gender? [1.Female] [2.Male]", 1, 2);
+                switch (tmpGender) {
+                    case 1 -> gender = "female";
+                    case 2 -> gender = "male";
+                }
+                String name = Dialogs.prompt("Animal name:");
+                addNewAnimal(player, price, name, gender, animalType);
+            }
+        }
+    }
+
+    //create new animal, add to player
+    public static void addNewAnimal(Player player, int price, String name, String gender, String animalType) {
+        Animal newAnimal = null;
+        switch(animalType){
+            case "Mammoth" -> newAnimal = new Mammoth(name, gender);
+            case "FlyingFox" -> newAnimal = new FlyingFox(name, gender);
+            case "Dodo" -> newAnimal = new Dodo(name, gender);
+        }
+        ArrayList<Animal> temp = player.getAnimalInv();
+        temp.add(newAnimal);
+        player.setAnimalInv(temp);
+        player.setCash(player.getCash() - price);
+        Game.actionsTaken = true;
+    }
+
+    //sell animals (if you have any)
+    public static void sellAnimal(Player player) {
+        player.showStats();
+
+        if (player.animalInv.size() > 0) {
+
+            int animalToSell = Dialogs.promptInt("Number of the animal you want to sell:",
+            1, player.animalInv.size() + 1);
+
+            //calculate sellprice and withdraw it
+            int sellPrice = (int) player.animalInv.get(animalToSell - 1).getSellPrice();
+            player.setCash(player.getCash() + sellPrice);
+
+            player.animalInv.remove(animalToSell - 1);
+            Game.actionsTaken = true;
+            System.out.println("You sold an animal for " + sellPrice + "€. Your balance: " + player.getCash() + "€");
+            Dialogs.enterToContinue();
+        }
+        else {
+            System.out.println("You have no animals to sell.");
+            Dialogs.enterToContinue();
+        }
+
+    }
     static void buyFood(Player player) {
         var buyingFood = true;
         var foodType = "";
@@ -112,76 +182,6 @@ public class Store {
             player.setFoodInv(temp);
         }
     }
-
-    //buy animals
-    public static void buyAnimals(Player player) {
-        var buying = true;
-        //select food
-        while (buying) {
-
-            int price = 0;
-            String animalType = "";
-            String gender = "";
-            Dialogs.clear();
-            player.showStats();
-            //select what to buy
-            int input = Dialogs.promptInt("Available animals: [1.Mammoth 250€] [2.Flying Fox 150€] " +
-                    "[3.Dodo 150€] [6.Done]", 1, 6);
-            switch (input) {
-                case 1 -> {  if (checkCash(player, input)) {animalType = "Mammoth"; price = 250;} else continue;}
-                case 2 -> {  if (checkCash(player, input)) {animalType = "FlyingFox"; price = 150;} else continue;}
-                case 3 -> {  if (checkCash(player, input)) {animalType = "Dodo"; price = 300;} else continue;}
-                case 6 -> { buying = false;}
-            }
-            //select gender, name
-            if (buying) {
-                int tmpGender = Dialogs.promptInt("Which gender? [1.Female] [2.Male]", 1, 2);
-                switch (tmpGender) {
-                    case 1 -> gender = "female";
-                    case 2 -> gender = "male";
-                }
-                String name = Dialogs.prompt("Animal name:");
-                buyAnimal(player, price, name, gender, animalType);
-            }
-        }
-    }
-
-    //create new animal, add to player
-    public static void buyAnimal(Player player, int price, String name, String gender, String animalType) {
-        Animal newAnimal = null;
-        switch(animalType){
-            case "Mammoth" -> newAnimal = new Mammoth(name, gender);
-            case "FlyingFox" -> newAnimal = new FlyingFox(name, gender);
-            case "Dodo" -> newAnimal = new Dodo(name, gender);
-        }
-        ArrayList<Animal> temp = player.getAnimalInv();
-        temp.add(newAnimal);
-        player.setAnimalInv(temp);
-        player.setCash(player.getCash() - price);
-        Game.actionsTaken = true;
-    }
-
-    //sell animals (if you have any)
-    public static void sellAnimal(Player player) {
-        player.showStats();
-
-        if (player.animalInv.size() > 0) {
-            int animalToSell = Dialogs.promptInt("Number of the animal you want to sell:",
-                    1, player.animalInv.size() + 1);
-            int sellPrice = (int) player.animalInv.get(animalToSell - 1).getSellPrice();
-            //player.setCash(player.getCash() + sellPrice);
-            player.animalInv.remove(animalToSell - 1);
-            Game.actionsTaken = true;
-            System.out.println("You sold an animal for " + sellPrice + "€. Your balance: " + player.getCash() + "€");
-            Dialogs.enterToContinue();
-        }
-        else {
-            System.out.println("You have no animals to sell.");
-            Dialogs.enterToContinue();
-        }
-
-    }
-
 /*
     static void addToFoodInv (Player player, Food foodType, int kilos, int price) {
         HashMap<Food, Integer> tmpFoodInv = player.getFoodInv();
