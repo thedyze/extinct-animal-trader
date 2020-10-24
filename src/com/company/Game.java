@@ -16,6 +16,7 @@ public class Game {
     static void turn(int totalPlayers, int totalTurns) {
         int turn;
         for (turn = 1; turn <= totalTurns; turn++) {
+
             //loop player turns
             Player player;
             for (int i = 0; i < totalPlayers; i++) {
@@ -23,6 +24,7 @@ public class Game {
                 actionsTaken = false;
                 player = playerList.get(i);
                 System.out.println("Game turn: \u001B[1m" + turn + "/" + totalTurns +"\033[0;0m");
+                if (turn==totalTurns) {System.out.println("FINAL TURN!!");}
                 player.removeDeadAnimals();
                 playerAction(player);
                 player.reduceAnimalHealth();
@@ -36,8 +38,37 @@ public class Game {
             }
             playerList.removeIf(x -> ((hasLost(x))));
             totalPlayers = playerList.size();
+            if (turn==totalTurns) { gameEndCheck(/*turn, totalTurns*/); }
         }
+
+
     }
+    static void gameEndCheck(/* int turn, int totalTurns */) {
+            Player player = null;
+            System.out.println("GAME FINISHED!");
+            Dialogs.enterToContinue();
+            int endCash = 0;
+            String winner = "";
+
+            for (int i = 0; i < playerList.size(); i++) {
+
+                player = playerList.get(i);
+                for (int a = player.animalInv.size() -1; a>=0; a--) {
+
+                    int sellPrice = (int) player.animalInv.get(a).getSellPrice();
+                    player.setCash(player.getCash() + sellPrice);
+                    player.animalInv.remove(a);
+                }
+                if (player.getCash() > endCash) {
+                    endCash = player.getCash();
+                    winner = player.getName();
+                }
+                System.out.println("Player \u001B[1m" + player.getName() + "033[0;0m your final cash: " + player.getCash() + "€");
+            }
+        System.out.println("The winner is \u001B[1m" + winner +"\033[0;0m");
+    }
+
+
     //main loop
     static public void playerAction(Player player) {
         while (!Game.actionsTaken){
@@ -81,15 +112,21 @@ public class Game {
                 System.out.println(t);
 
                 //right kind of food - add health, subtract food
-                if ((foodToFeed+1) == player.animalInv.get(animalToFeed).getFeedsOn() && (tempFoodInv.get(foodToFeed).getQuantity() > 0)) {
+                if (tempFoodInv.get(foodToFeed).getType() == player.animalInv.get(animalToFeed).getFeedsOn()
+                        && (tempFoodInv.get(foodToFeed).getQuantity() > 0)) {
 
                     player.animalInv.get(animalToFeed).setHealth(-10);
-                    System.out.println("Animal health: " + player.animalInv.get(animalToFeed).getHealth());
+                    System.out.println(player.animalInv.get(animalToFeed).getClass().getSimpleName() + " " +
+                            player.animalInv.get(animalToFeed).getName() + " ate and now have "
+                            + player.animalInv.get(animalToFeed).getHealth() + " health.\n" +
+                            "You have " + tempFoodInv.get(foodToFeed).getQuantity() + "kgs of " +
+                            tempFoodInv.get(foodToFeed).getClass().getSimpleName() + " left");
+
                     tempFoodInv.get(foodToFeed).setQuantity(tempFoodInv.get(foodToFeed).getQuantity() - 1);
 
                     //remove food if quantity = 0
                     for (Food food : tempFoodInv) {
-                        if (food.setQuantity(food.getQuantity()) == 0) {
+                        if (food.getQuantity() == 0) {
                             tempFoodInv.remove(foodToFeed);
                         }
                         Game.actionsTaken = true;
@@ -97,7 +134,7 @@ public class Game {
                     }
                 }
                 //wrong type of food
-                else if ((foodToFeed+1) != player.animalInv.get(animalToFeed).getFeedsOn()) {
+                else if (tempFoodInv.get(foodToFeed).getType() != player.animalInv.get(animalToFeed).getFeedsOn()) {
                     System.out.println(player.animalInv.get(animalToFeed).getClass().getSimpleName() + " "
                             + player.animalInv.get(animalToFeed).getName() + " can't eat "
                             + tempFoodInv.get(foodToFeed).getClass().getSimpleName() + "!");
@@ -105,34 +142,15 @@ public class Game {
                 }
                 else if (player.foodInv.get(foodToFeed).getQuantity() == 0) {
                     System.out.println("You have no food");
+                    feeding = false;
                 }
             }
             else if (player.foodInv.size() == 0) {
                 System.out.println("You have no food");
+                feeding = false;
             }
         }
             player.setFoodInv(tempFoodInv);
-    }
-
-    static void newGame() {
-        int players;
-        int totalTurns;
-        int totalPlayers;
-        //welcome
-        Dialogs.clear();
-        System.out.println("      Welcome to: \n \u001B[1mEXTINCT ANIMAL TRADER\033[0;0m \n ----------------------\n");
-        Dialogs.promptInt("Press 1 for new game:", 1, 1);
-        totalPlayers = Dialogs.promptInt("How many players? (1-4)", 1, 4);
-
-        //add players
-        for (int i = 0; i < totalPlayers; i++) {
-            Player player = new Player(Dialogs.prompt("Player " + (i + 1) + " name?"));
-            Game.playerList.add(player);
-        }
-
-        //select number of game turns
-        totalTurns = Dialogs.promptInt("Select Game duration? (5-30 turns):", 5, 30);
-        Game.turn(totalPlayers, totalTurns);
     }
 
     static void mateAnimals(Player player) {
@@ -141,8 +159,10 @@ public class Game {
         //setup mating variables
         int mate1 = Dialogs.promptInt("First animal to mate:",1, player.animalInv.size() + 1) - 1;
         int mate2 = Dialogs.promptInt("Second animal to mate:",1, player.animalInv.size() + 1) - 1;
-        Object animalType1 = player.animalInv.get(mate1).getClass().getSimpleName();
-        Object animalType2 = player.animalInv.get(mate2).getClass().getSimpleName();
+        String animalType1 = player.animalInv.get(mate1).getClass().getSimpleName();
+        String animalType2 = player.animalInv.get(mate2).getClass().getSimpleName();
+        //Object animalType1 = player.animalInv.get(mate1).getClass().getSimpleName();
+        //Object animalType2 = player.animalInv.get(mate2).getClass().getSimpleName();
         String gender1 = player.animalInv.get(mate1).gender;
         String gender2 = player.animalInv.get(mate2).gender;
 
@@ -155,8 +175,10 @@ public class Game {
                 if (rand2) {gender = "male";}
                 else {gender = "female";}
                 String name = Dialogs.prompt("Success!! It's a " + gender + "! Choose baby animal name:");
-                Store.addNewAnimal(player, 0, name, gender, "Mammoth");
+                Store.addNewAnimal(player, 0, name, gender, animalType1);
                 Game.actionsTaken = true;
+                player.showStats();
+                Dialogs.enterToContinue();
             }
             else {
                 System.out.println("There was no baby :´(");
@@ -179,6 +201,28 @@ public class Game {
         }
 
     }
+
+    static void newGame() {
+        int players;
+        int totalTurns;
+        int totalPlayers;
+        //welcome
+        Dialogs.clear();
+        System.out.println("      Welcome to: \n \u001B[1mEXTINCT ANIMAL TRADER\033[0;0m \n ----------------------\n");
+        Dialogs.promptInt("Press 1 for new game:", 1, 1);
+        totalPlayers = Dialogs.promptInt("How many players? (1-4)", 1, 4);
+
+        //add players
+        for (int i = 0; i < totalPlayers; i++) {
+            Player player = new Player(Dialogs.prompt("Player " + (i + 1) + " name?"));
+            Game.playerList.add(player);
+        }
+
+        //select number of game turns
+        totalTurns = Dialogs.promptInt("Select Game duration? (5-30 turns):", 3, 30);
+        Game.turn(totalPlayers, totalTurns);
+    }
+
     //check if player lost
     static boolean hasLost(Player player) {
         return (player.getCash() == 0 && player.animalInv.size() == 0);
