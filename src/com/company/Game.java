@@ -23,10 +23,10 @@ public class Game {
                 Dialogs.clear();
                 actionsTaken = false;
                 player = playerList.get(i);
-                System.out.println("Game turn: \u001B[1m" + turn + "/" + totalTurns +"\033[0;0m");
+                //System.out.println("Game turn: \u001B[1m" + turn + "/" + totalTurns +"\033[0;0m");
                 if (turn==totalTurns) {System.out.println("FINAL TURN!!");}
                 player.removeDeadAnimals();
-                playerAction(player);
+                playerAction(player, turn, totalTurns);
                 player.reduceAnimalHealth();
                 //remove players that lost
                 if (hasLost(player)) {
@@ -44,9 +44,10 @@ public class Game {
     }
 
     //main loop
-    static public void playerAction(Player player) {
+    static public void playerAction(Player player, int turn, int totalTurns) {
         while (!Game.actionsTaken){
             player.showStats();
+            System.out.println("Game turn: \u001B[1m" + turn + "/" + totalTurns +"\033[0;0m");
             var input = Dialogs.promptInt("\nChoose your action:\n [1.Visit Store] " +
                             "[2.Feed Animals] [3.Mate Animals]"
                 , 1, 3);
@@ -119,11 +120,13 @@ public class Game {
                 else if (player.foodInv.get(foodToFeed).getQuantity() == 0) {
                     System.out.println("You have no food");
                     feeding = false;
+                    Dialogs.enterToContinue();
                 }
             }
             else if (player.foodInv.size() == 0) {
                 System.out.println("You have no food");
                 feeding = false;
+                Dialogs.enterToContinue();
             }
         }
             player.setFoodInv(tempFoodInv);

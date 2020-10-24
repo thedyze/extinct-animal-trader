@@ -7,7 +7,7 @@ public class FlyingFox extends Animal {
 
     public FlyingFox(String name, String gender) {
         super(name, gender);
-        feedsOn = 2;
+        feedsOn = 1;
 
     }
     public double getSellPrice(){

@@ -36,15 +36,15 @@ public class Store {
             Dialogs.clear();
             player.showStats();
             //select what to buy
-            int input = Dialogs.promptInt("Buy animals: \n1.Mammoth 250€ \n2.Flying Fox 150€ " +
-                    "\n3.Dodo 150€ \n4.Giant Rat 100€\n4.Elephant Bird 175€\n6.DONE", 1, 6);
+            int input = Dialogs.promptInt("\u001B[1mBuy animals:\033[0;0m \n1.Mammoth 250€ \n2.Flying Fox 150€ " +
+                    "\n3.Dodo 125€ \n4.Giant Rat 100€\n4.Elephant Bird 175€\n6.DONE", 1, 6);
             switch (input) {
                 case 1 -> {  price = 250; if (checkCash(player, price)) {animalType = "Mammoth"; } else continue;}
                 case 2 -> {  price = 150; if (checkCash(player, price)) {animalType = "FlyingFox";} else continue;}
-                case 3 -> {  price = 120; if (checkCash(player, price)) {animalType = "Dodo";} else continue;}
+                case 3 -> {  price = 125; if (checkCash(player, price)) {animalType = "Dodo";} else continue;}
                 case 4 -> {  price = 100; if (checkCash(player, price)) {animalType = "GiantRat"; } else continue;}
                 case 5 -> {  price = 175; if (checkCash(player, price)) {animalType = "ElephantBird"; } else continue;}
-                case 6 -> { buying = false;}
+                case 6 -> buying = false;
             }
             //select gender, name
             if (buying) {
@@ -92,12 +92,11 @@ public class Store {
             player.animalInv.remove(animalToSell - 1);
             Game.actionsTaken = true;
             System.out.println("You sold an animal for " + sellPrice + "€. Your balance: " + player.getCash() + "€");
-            Dialogs.enterToContinue();
         }
         else {
             System.out.println("You have no animals to sell.");
-            Dialogs.enterToContinue();
         }
+        Dialogs.enterToContinue();
 
     }
 
@@ -111,29 +110,32 @@ public class Store {
             player.showCashNFood();
 
             //select what to buy
-            int input = Dialogs.promptInt("    Food selection:           " +
-                    "Can eat:\n<======================><------------------->\n1.Cheezeburgers: 15€/kg           Mammoths" +
-                    " \n2.Lollipops:      11€/kg Elephant Birds, Flying Foxes\n3.Garbage:        8€/kg  Giant Rats, Dodos\n4.DONE" +
-                    " \n<======================><------------------->", 1, 6);
+            int input = Dialogs.promptInt("    Food selection:                 " +
+                    "Can eat:\n<======================><------------------------>\n1.Cheezeburgers 15€/kg" +
+                    "     Flying Foxes, Mammoths\n2.Lollipops     11€/kg             Elephant Birds" +
+                    "\n3.Garbage        8€/kg          Giant Rats, Dodos" +
+                    " \n<======================><------------------------>\n4.DONE", 1, 4);
             switch (input) {
                 case 1 -> {foodType = "Cheezeburgers"; price = 15;}
                 case 2 -> {foodType = "Lollipops"; price = 11;}
                 case 3 -> {foodType = "Garbage"; price = 8;}
-                case 4 -> {buyingFood = false; break; }
+                case 4 -> buyingFood = false;
             }
 
             //select amount to buy
-            //if (input<4) {
-                //System.out.println("You can afford max " + (player.getCash() / price) + " kgs of " + foodType);
+            if (input < 4) {
                 var kilos = Dialogs.promptInt("You can afford max \u001B[1m" + (player.getCash() / price) +
-                        "\033[0;0m kgs of \u001B[1m" + foodType + "\033[0;0m. \nHow many do you want?" , 1, (player.getCash() / price)) ;
-
+                        "\033[0;0m kgs of \u001B[1m" + foodType + "\033[0;0m. \nHow many do you want?", 1, (player.getCash() / price));
+                addToFoodInv(player, foodType, kilos, price);
+            }
+            /*
                 switch (foodType) {
                     case "Cheezeburgers" -> addToFoodInv(player, foodType, kilos, price);
                     case "Lollipops" -> addToFoodInv(player, foodType, kilos, price);
                     case "Garbage" -> addToFoodInv(player, foodType, kilos, price);
                 }
-            //}
+
+             */
         }
     }
 

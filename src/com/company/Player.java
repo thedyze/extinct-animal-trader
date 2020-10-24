@@ -48,17 +48,18 @@ public class Player {
     public void showStats() {
         if (animalInv.size() > 0) {
             System.out.println("Player: \u001B[1m" + this.name +
-                    "\033[0;0m, you have: \u001B[1m" + this.cash + "€\033[0;0m\nYour animals:");
+                    "\033[0;0m, you have: \u001B[1m" + this.cash + "€\033[0;0m\n\n                  Your animals:" +
+                    "\n-----------------------------------------------");
             animalInv.forEach(x -> {
                 int index = getAnimalInv().indexOf(x);
                 var className = x.getClass().getSimpleName();
                 var animalName = x.getName();
                 var animalGender = x.gender;
                 var animalHealth = x.getHealth();
-                System.out.println((index+1) + ": " + className + " " + "'" + animalName +
+                System.out.println(" " + (index+1) + ": " + className + " " + "'" + animalName +
                 "' (" +animalGender +") Health: " + animalHealth + "");
                 });
-            System.out.println("");
+            System.out.println("-----------------------------------------------\n");
         }
         else if (animalInv.size() == 0){System.out.println("Player: \u001B[1m" + this.name +
                 "\033[0;0m, you have: \u001B[1m" + this.cash + "€\033[0;0m");
