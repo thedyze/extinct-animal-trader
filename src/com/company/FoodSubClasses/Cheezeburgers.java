@@ -8,8 +8,4 @@ public class Cheezeburgers extends Food {
         super(amount);
         this.type= 1;
     }
-
-    public int getPrice(){
-        return this.price;
-    }
 }

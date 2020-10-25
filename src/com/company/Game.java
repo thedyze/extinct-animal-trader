@@ -3,16 +3,9 @@ import java.util.ArrayList;
 
 public class Game {
     public static ArrayList<Player> playerList = new ArrayList<>();
-    //public static ArrayList<Player> toRemoveList;
     public static boolean actionsTaken;
 
-    /*
-    public ArrayList getPlayerList() { return Game.playerList;}
-    public void setPlayerList(ArrayList<Player> playerList) {
-        this.playerList = playerList;
-    }
-    */
-    //loop game turns
+    //main game loop
     static void turn(int totalPlayers, int totalTurns) {
         int turn;
         for (turn = 1; turn <= totalTurns; turn++) {
@@ -23,8 +16,8 @@ public class Game {
                 Dialogs.clear();
                 actionsTaken = false;
                 player = playerList.get(i);
-                //System.out.println("Game turn: \u001B[1m" + turn + "/" + totalTurns +"\033[0;0m");
-                if (turn==totalTurns) {System.out.println("FINAL TURN!!");}
+                if (turn==totalTurns) {
+                    System.out.println("LAST TURN!");}
                 player.removeDeadAnimals();
                 playerAction(player, turn, totalTurns);
                 player.reduceAnimalHealth();
@@ -47,7 +40,7 @@ public class Game {
     //main loop
     static public void playerAction(Player player, int turn, int totalTurns) {
         while (!Game.actionsTaken){
-            player.showStats();
+            player.showCashNAnimals();
             System.out.println("Game turn: \u001B[1m" + turn + "/" + totalTurns +"\033[0;0m");
             var input = Dialogs.promptInt("\nChoose your action:\n [1.Visit Store] " +
                             "[2.Feed Animals] [3.Mate Animals]"
@@ -64,7 +57,7 @@ public class Game {
     public static void feedAnimal(Player player) {
 
         ArrayList<Food> tempFoodInv = player.getFoodInv();
-        player.showStats();
+        player.showCashNAnimals();
         int animalToFeed = 0;
         int foodToFeed;
         boolean feeding = true;
@@ -93,7 +86,7 @@ public class Game {
 
                     player.animalInv.get(animalToFeed).setHealth(-10);
                     tempFoodInv.get(foodToFeed).setQuantity(tempFoodInv.get(foodToFeed).getQuantity() - 1);
-                    //notification that animal ate, remaining food
+                    //notify player that animal ate, remaining food
                     System.out.println(player.animalInv.get(animalToFeed).getClass().getSimpleName() + " " +
                             player.animalInv.get(animalToFeed).getName() + " ate and now have "
                             + player.animalInv.get(animalToFeed).getHealth() + " health.\n" +
@@ -110,6 +103,7 @@ public class Game {
                         Dialogs.enterToContinue();
                     //}
                 }
+
                 //wrong type of food
                 else if (tempFoodInv.get(foodToFeed).getType() != player.animalInv.get(animalToFeed).getFeedsOn()) {
                     System.out.println(player.animalInv.get(animalToFeed).getClass().getSimpleName() + " "
@@ -135,19 +129,18 @@ public class Game {
 
     static void mateAnimals(Player player) {
         Dialogs.clear();
-        player.showStats();
+        player.showCashNAnimals();
+
         //setup mating variables
         int mate1 = Dialogs.promptInt("First animal to mate:",1, player.animalInv.size() + 1) - 1;
         int mate2 = Dialogs.promptInt("Second animal to mate:",1, player.animalInv.size() + 1) - 1;
         String animalType1 = player.animalInv.get(mate1).getClass().getSimpleName();
         String animalType2 = player.animalInv.get(mate2).getClass().getSimpleName();
-        //Object animalType1 = player.animalInv.get(mate1).getClass().getSimpleName();
-        //Object animalType2 = player.animalInv.get(mate2).getClass().getSimpleName();
         String gender1 = player.animalInv.get(mate1).gender;
         String gender2 = player.animalInv.get(mate2).gender;
 
         //try to mate (not with self, only with same animal type, and different gender)
-        if (!(mate1 == mate2) && (animalType1 == animalType2) && !(gender1 == gender2)) {
+        if (!(mate1 == mate2) && (animalType1.equals(animalType2)) && !(gender1.equals(gender2))) {
             boolean rand = Math.random() < 0.5;
             if (rand) {
                 boolean rand2 = Math.random() < 0.5;
@@ -157,7 +150,7 @@ public class Game {
                 String name = Dialogs.prompt("Success!! It's a " + gender + "! Choose baby animal name:");
                 Store.addNewAnimal(player, 0, name, gender, animalType1);
                 Game.actionsTaken = true;
-                player.showStats();
+                player.showCashNAnimals();
                 Dialogs.enterToContinue();
             }
             else {
@@ -175,7 +168,7 @@ public class Game {
             System.out.println("Only male + female can mate!");
             Dialogs.enterToContinue();
         }
-        if (!(animalType1 == animalType2)) {
+        if (!animalType1.equals(animalType2)) {
             System.out.println("Only animals of the same species can mate");
             Dialogs.enterToContinue();
         }
@@ -215,6 +208,8 @@ public class Game {
         String winner = "";
 
         //for (int i = 0; i < playerList.size(); i++) {
+
+        //sell remaining animals
         for (Player value : playerList) {
 
             player = value;
@@ -224,10 +219,13 @@ public class Game {
                             + player.animalInv.get(a).getName() + "died");
                     player.animalInv.remove(a);
                 }
-                int sellPrice = (int) player.animalInv.get(a).getSellPrice();
-                player.setCash(player.getCash() + sellPrice);
-                player.animalInv.remove(a);
+                if (player.animalInv.size() > 0) {
+                    int sellPrice = (int) player.animalInv.get(a).getSellPrice();
+                    player.setCash(player.getCash() + sellPrice);
+                    player.animalInv.remove(a);
+                }
             }
+            //check who won
             if (player.getCash() > endCash) {
                 endCash = player.getCash();
                 winner = player.getName();

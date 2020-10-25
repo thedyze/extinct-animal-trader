@@ -9,6 +9,7 @@ public class ElephantBird extends Animal {
         super(name, gender);
         feedsOn = 2;
     }
+
     public double getSellPrice(){
         double healthModifier = (getHealth() *0.01);
         this.buyPrice = (int) (buyPrice * healthModifier);

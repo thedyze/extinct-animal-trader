@@ -9,8 +9,4 @@ public class Lollipops extends Food {
         this.type=2;
 
     }
-
-    public int getPrice(){
-        return this.price;
-    }
 }

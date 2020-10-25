@@ -8,8 +8,4 @@ public class Garbage extends Food {
         super(amount);
         this.type= 3;
     }
-
-    public int getPrice(){
-        return this.price;
-    }
 }
